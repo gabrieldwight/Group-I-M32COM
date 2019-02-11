@@ -92,7 +92,8 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
                             // to redirect logged user to admin page based on the user assigned role
                             if (user_roles.Single().Equals("Admin", StringComparison.OrdinalIgnoreCase))
                             {
-                                return Redirect("https://www.gsmarena.com/");
+                                // The use of the method below is to pass the action method name and the name of the controller
+                                return RedirectToAction("Index","Boats");
                             }
 
                             // to redirect logged user to crew page based on the user assigned role

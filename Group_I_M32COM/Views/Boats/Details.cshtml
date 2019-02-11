@@ -1,0 +1,60 @@
+﻿@model Group_I_M32COM.DbTableModel.Boat
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Boat</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Boat_name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Boat_name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Boat_top_speed)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Boat_top_speed)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Boat_weight)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Boat_weight)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Boat_description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Boat_description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Boat_media_type)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Boat_media_type)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Created_At)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Created_At)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Updated_At)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Updated_At)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

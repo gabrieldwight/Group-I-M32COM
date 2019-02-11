@@ -60,6 +60,7 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account.Manage
             public string Address { get; set; }
 
             [DataType(DataType.Text)]
+            [RegularExpression("^[a-zA-Z ]*$", ErrorMessage = "The city name should not contain any number")]
             [MaxLength(50)]
             public string City { get; set; }
 
