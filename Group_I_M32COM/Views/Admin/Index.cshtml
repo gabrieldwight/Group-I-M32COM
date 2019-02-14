@@ -1,0 +1,128 @@
+﻿@model IEnumerable<Group_I_M32COM.Models.User_RoleModel>
+
+@{
+    ViewData["Title"] = "User Dashboard";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<h2>Users</h2>
+<h4>No of Users: @Model.Count()</h4>
+
+<div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+        <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Show 10 rows
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <a class="dropdown-item" href="#">10</a>
+            <a class="dropdown-item" href="#">25</a>
+            <a class="dropdown-item" href="#">50</a>
+            <a class="dropdown-item" href="#">Show All</a>
+        </div>
+        <a asp-action="CreateAdmin"><button type="button" class="btn btn-outline-secondary">Add Admin Users</button></a>
+    </div>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <div class="input-group-text" id="btnGroupAddon2">Search</div>
+        </div>
+        <input type="text" class="form-control" placeholder="Search" id="searchTextBoxid" onkeyup="search()" aria-label="Input group example" aria-describedby="btnGroupAddon2">
+    </div>
+</div>
+<table id="mainTableid" class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Created_At)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Last_Login)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Login_Status)
+            </th>
+            <th>
+                Actions
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created_At)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Last_Login)
+                </td>
+                <td>
+                    @if (item.Login_Status == true)
+                    {
+                        <p>Online</p>
+                    }
+                    else
+                    {
+                        <p>Offline</p>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.User_Id" class="badge badge-warning">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.User_Id" class="badge badge-primary">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.User_Id" class="badge badge-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function search() {
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("searchTextBoxid"); //to get typed in keyword
+        filter = input.value.toUpperCase(); //to avoid case sensitive search, if case sensitive search is required then comment this line
+        table = document.getElementById("mainTableid"); //to get the html table
+        tr = table.getElementsByTagName("tr"); //to access rows in the table
+        var countvisble = 0; //to hide and show the alert label
+        // Search all table rows, hide those who don't match the search key word
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0]; //search keyword searched only in 1st column of the table, if you want to search other columns then change [0] to [1] or any required column number
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    countvisble++;
+                    tr[i].style.display = "";
+                    document.getElementById("NotExist").style.display = "none";
+                }
+                else {
+                    tr[i].style.display = "none";
+                    document.getElementById("NotExist").style.display = "none";
+                }
+            }
+        }
+
+
+        if (countvisble == 0) //displays the alert message label
+        {
+            document.getElementById("NotExist").style.display = "Block";
+            document.getElementById("NotExist").innerHTML = "Does not exist!";
+        }
+    }
+</script>
