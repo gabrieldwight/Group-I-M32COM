@@ -19,6 +19,7 @@ namespace Group_I_M32COM.Controllers
             _context = context;
         }
 
+        // To return a list of the users and roles details from the database to the view
         public async Task<IActionResult> AdminIndex()
         {
             var data = from r in _context.Roles
