@@ -94,7 +94,7 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
                             {
                                 // The use of the method below is to pass the action method name and the name of the controller
                                 //return RedirectToAction("Index","Boats");
-                                return RedirectToAction("AdminIndex", "Home");
+                                return RedirectToAction("AdminIndex", "Admin");
                             }
 
                             // to redirect logged user to crew page based on the user assigned role
