@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using static Group_I_M32COM.Helpers.Data_RolesEnum;
 
 namespace Group_I_M32COM.Data
 {
@@ -37,16 +40,29 @@ namespace Group_I_M32COM.Data
                 await roleManager.CreateAsync(new ApplicationRole(role2, desc2, DateTime.Now));
             }*/
 
-            List<Data_Roles> data_Roles = new List<Data_Roles>()
+            /*List<Data_Roles> data_Roles = new List<Data_Roles>()
             {
-                new Data_Roles { Role_Name = "Admin", Role_Description = "This is the administrator role"},
-                new Data_Roles { Role_Name = "Member", Role_Description = "This is the members role"},
-                new Data_Roles { Role_Name = "User", Role_Description = "This is the user role"}
-            };
+                new Data_Roles { Role_Name = Role_Enum.Admin, Role_Description = RoleDescriptionNames.GetDescription(Role_Enum.Admin)},
+                new Data_Roles { Role_Name = Role_Enum.Member, Role_Description = RoleDescriptionNames.GetDescription(Role_Enum.Member)},
+                new Data_Roles { Role_Name = Role_Enum.User, Role_Description = RoleDescriptionNames.GetDescription(Role_Enum.User)},
+                new Data_Roles { Role_Name = Role_Enum.Crew, Role_Description = RoleDescriptionNames.GetDescription(Role_Enum.Crew)}
+            };*/
+
+            // Seeding roles sample data to database
+            List<Data_Roles> data_Roles = new List<Data_Roles>();
+
+            foreach (Role_Enum role_enum in Enum.GetValues(typeof(Role_Enum)))
+            {
+                data_Roles.Add(new Data_Roles
+                {
+                    Role_Name = role_enum,
+                    Role_Description = RoleDescriptionNames.GetDescription(role_enum)
+                });
+            }
 
             foreach (var roles in data_Roles)
             {
-                await CreateRole(roles.Role_Name, roles.Role_Description);
+                await CreateRole(roles.Role_Name.ToString(), roles.Role_Description);
             }
 
             //await CreateRole("Admin", "This is the administrator role");
@@ -63,7 +79,7 @@ namespace Group_I_M32COM.Data
             }
 
             // To check if the user exists in the database
-            if (await userManager.FindByNameAsync("rtesting@test.com") == null)
+            /*if (await userManager.FindByNameAsync("rtesting@test.com") == null)
             {
                 var user = new ApplicationUser
                 {
@@ -170,13 +186,89 @@ namespace Group_I_M32COM.Data
                     await userManager.AddPasswordAsync(user, password);
                     await userManager.AddToRoleAsync(user, role2);
                 }
-            }
-        }
+            }*/
 
-        public class Data_Roles
-        {
-            public string Role_Name { get; set; }
-            public string Role_Description { get; set; }
+            List<ApplicationUser> applicationUsers = new List<ApplicationUser>()
+            {
+                // First User
+                new ApplicationUser
+                {
+                    UserName = "rtesting@test.com",
+                    Email = "rtesting@test.com",
+                    FirstName = "Adam",
+                    LastName = "Aldridge",
+                    Address = "Fake St",
+                    City = "Vancouver",
+                    PostalCode = "VSU K8I",
+                    Country = "Canada",
+                    PhoneNumber = "6902341234",
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                },
+                // Second User
+                new ApplicationUser
+                {
+                    UserName = "btesting@test.com",
+                    Email = "btesting@test.com",
+                    FirstName = "Bob",
+                    LastName = "Parker",
+                    Address = "Vermount St",
+                    City = "Surrey",
+                    PostalCode = "VSU K8I",
+                    Country = "Canada",
+                    PhoneNumber = "6702341234",
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                },
+                // Third User
+                new ApplicationUser
+                {
+                    UserName = "ctesting@test.com",
+                    Email = "ctesting@test.com",
+                    FirstName = "Smith",
+                    LastName = "Aldridge",
+                    Address = "Yew St",
+                    City = "Vancouver",
+                    PostalCode = "VSU K8I",
+                    Country = "Canada",
+                    PhoneNumber = "6905341234",
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                },
+                // Fourth User
+                new ApplicationUser
+                {
+                    UserName = "dtesting@test.com",
+                    Email = "dtesting@test.com",
+                    FirstName = "Chris",
+                    LastName = "Aldridge",
+                    Address = "Fake St",
+                    City = "Vancouver",
+                    PostalCode = "VSU K8I",
+                    Country = "Canada",
+                    PhoneNumber = "6901521234",
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                }
+            };
+
+            // Await method to create all the applicationUsers from the list
+            foreach (var u in applicationUsers)
+            {
+                await CreateUser(u, u.UserName);
+            }
+
+            async Task CreateUser(ApplicationUser user, string username)
+            {
+                // To check if the number of users exists in the database before adding them to the user table
+                if (await userManager.FindByNameAsync(username) == null)
+                {
+                    // create the users through the user manager
+                    var result = await userManager.CreateAsync(user);
+                    // If all the users are successfully created. We assign all the user a password and a role through the userManager object.
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddPasswordAsync(user, password);
+                        await userManager.AddToRoleAsync(user, Role_Enum.Admin.ToString());
+                    }
+                }
+            }
         }
     }
 }
