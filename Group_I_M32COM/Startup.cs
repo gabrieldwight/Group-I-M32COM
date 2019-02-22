@@ -51,6 +51,7 @@ namespace Group_I_M32COM
 
             // The CountryData class will return a list everytime upon a request on the page constructor through dependency injection
             services.AddTransient<Helpers.ICountryDataService, Helpers.CountryData>();
+            services.AddTransient<Helpers.IGenderDataService, Helpers.GenderData>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

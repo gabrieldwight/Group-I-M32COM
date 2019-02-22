@@ -76,7 +76,7 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
-            ViewData["CountryList"] = _countryData.LoadCountryList();
+            ViewData["CountryList"] = _countryData.LoadCountryList().OrderBy(a => a.Value).ToList();
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -109,11 +109,8 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account.Manage
         }
 
         // The OnPostAsync on the manage user page is used to perform form input operations to the database
-        public async Task<IActionResult> OnPostAsync(string CountryList)
+        public async Task<IActionResult> OnPostAsync()
         {
-            string selected_country = CountryList.ToString().Trim();
-            Console.WriteLine("Selected Country: " + selected_country);
-
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -156,7 +153,7 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account.Manage
                 userToUpdate.Address = Input.Address;
                 userToUpdate.City = Input.City;
                 userToUpdate.PostalCode = Input.PostalCode;
-                userToUpdate.Country = selected_country;
+                userToUpdate.Country = Input.Country;
                 userToUpdate.Updated_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
 
                 if (await TryUpdateModelAsync<ApplicationUser>(

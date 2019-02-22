@@ -52,8 +52,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.Country" class="control-label"></label>
-                <!--input asp-for="Input.Country" class="form-control" /-->
-                @Html.DropDownList("CountryList", new SelectList((IEnumerable<string>)ViewData["CountryList"]), "Select Country", new { @class = "form-control" })
+                <select class="form-control" asp-for="Input.Country" asp-items="@((List<SelectListItem>)ViewData["CountryList"])"></select>
                 <span asp-validation-for="Input.Country" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-default">Save</button>

@@ -25,8 +25,10 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
 
         private readonly Data.ApplicationDbContext _context;
         private readonly Helpers.ICountryDataService _countryData;
+        private readonly Helpers.IGenderDataService _genderData;
 
         public RegisterModel(
+            Helpers.IGenderDataService genderData,
             Helpers.ICountryDataService countryData,
             Data.ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
@@ -40,6 +42,7 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _context = context;
             _countryData = countryData;
+            _genderData = genderData;
         }
 
         [BindProperty]
@@ -76,6 +79,11 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
             [StringLength(50, ErrorMessage = "The minimum {2} and Maximum {1} characters are allowed", MinimumLength = 3)]
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
+
+            [Required(ErrorMessage = "Please select Gender")]
+            [DataType(DataType.Text)]
+            [Display(Name = "Gender")]
+            public string Gender { get; set; }
 
             [DataType(DataType.Text)]
             [MaxLength(50)]
@@ -118,18 +126,19 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             //LoadCountryList();
-            ViewData["CountryList"] = _countryData.LoadCountryList();
+            ViewData["CountryList"] = _countryData.LoadCountryList().OrderBy(a => a.Value).ToList();
+            ViewData["GenderList"] = _genderData.LoadGenderList().ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string CountryList, string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
                 //var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
 
-                string selected_country = CountryList.ToString().Trim();
-                Console.WriteLine("Selected Country: " + selected_country);
+               //string selected_country = CountryList.ToString().Trim();
+                //Console.WriteLine("Selected Country: " + selected_country);
 
                 // The below NETCORE class is used to separate the email string into parts such as user and domain
                 System.Net.Mail.MailAddress addr = new System.Net.Mail.MailAddress(Input.Email);
@@ -141,10 +150,11 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
                     Email = Input.Email,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
+                    Gender = Input.Gender.Trim(),
                     Address = Input.Address,
                     City = Input.City,
                     PostalCode = Input.PostalCode,
-                    Country = selected_country,
+                    Country = Input.Country.Trim(),
                     Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
