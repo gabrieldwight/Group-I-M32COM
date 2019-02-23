@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Group_I_M32COM.Data;
 using Group_I_M32COM.DbTableModel;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Group_I_M32COM.Controllers
 {
@@ -53,12 +55,29 @@ namespace Group_I_M32COM.Controllers
         // POST: Boats/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Binding the image upload to controller through the user Iformfile interface
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Boat_name,Boat_top_speed,Boat_weight,Boat_description,Boat_media_type,Created_At,Updated_At")] Boat boat)
+        public async Task<IActionResult> Create([Bind("Id,Boat_name,Boat_top_speed,Boat_weight,Boat_description,Boat_media_type,Created_At,Updated_At")] Boat boat, List<IFormFile> Image)
         {
+            foreach (var item in Image)
+            {
+                if (item.Length > 0)
+                {
+                    using (var stream = new MemoryStream())
+                    {
+                        await item.CopyToAsync(stream);
+                        foreach (var b in boat.Boat_Medias)
+                        {
+                            b.Boat_media_url = stream.ToArray();
+                        }
+                    }
+                }
+            }
             if (ModelState.IsValid)
             {
+                // To pass the creation date on system time
+                boat.Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
                 _context.Add(boat);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -98,6 +117,8 @@ namespace Group_I_M32COM.Controllers
             {
                 try
                 {
+                    // To set the system time for record update
+                    boat.Updated_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
                     _context.Update(boat);
                     await _context.SaveChangesAsync();
                 }
