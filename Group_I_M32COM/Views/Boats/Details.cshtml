@@ -9,6 +9,11 @@
 <div>
     <h4>Boat</h4>
     <hr />
+    @foreach (var boat_image in Model.Boat_Medias)
+    {
+        <img src="@Url.Content(boat_image.Boat_media_url)" class="img-fluid img-thumbnail" width="200px" height="200px" alt="Responsive image">
+    }
+    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Boat_name)
@@ -33,12 +38,6 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Boat_description)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Boat_media_type)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Boat_media_type)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Created_At)

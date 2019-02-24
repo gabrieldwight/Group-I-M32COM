@@ -11,5 +11,8 @@ namespace Group_I_M32COM.DbTableModel
         public string Boat_media_url { get; set; }
         public DateTime? Created_At { get; set; }
         public DateTime? Updated_At { get; set; }
+
+        // Foreign key for boat
+        public Boat Boat { get; set; }
     }
 }

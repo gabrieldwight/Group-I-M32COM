@@ -4,14 +4,16 @@ using Group_I_M32COM.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Group_I_M32COM.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190224003749_boatmediaforeignkeyadd")]
+    partial class boatmediaforeignkeyadd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,9 +91,9 @@ namespace Group_I_M32COM.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BoatId");
-
                     b.Property<string>("Boat_media_url");
+
+                    b.Property<int?>("BoatsId");
 
                     b.Property<DateTime?>("Created_At");
 
@@ -99,7 +101,7 @@ namespace Group_I_M32COM.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BoatId");
+                    b.HasIndex("BoatsId");
 
                     b.ToTable("Boat_Medias");
                 });
@@ -407,9 +409,9 @@ namespace Group_I_M32COM.Data.Migrations
 
             modelBuilder.Entity("Group_I_M32COM.DbTableModel.Boat_media", b =>
                 {
-                    b.HasOne("Group_I_M32COM.DbTableModel.Boat", "Boat")
+                    b.HasOne("Group_I_M32COM.DbTableModel.Boat", "Boats")
                         .WithMany("Boat_Medias")
-                        .HasForeignKey("BoatId");
+                        .HasForeignKey("BoatsId");
                 });
 
             modelBuilder.Entity("Group_I_M32COM.DbTableModel.Event", b =>

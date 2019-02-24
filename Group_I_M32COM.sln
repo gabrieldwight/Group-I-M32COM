@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Group_I_M32COM", "Group_I_M32COM\Group_I_M32COM.csproj", "{102B34CE-B147-478B-810B-0C1477D1D3A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Group_I_M32COM", "Group_I_M32COM\Group_I_M32COM.csproj", "{102B34CE-B147-478B-810B-0C1477D1D3A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

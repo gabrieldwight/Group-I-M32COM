@@ -35,7 +35,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Boat_media_type" class="control-label"></label>
-                <input asp-for="Boat_media_type" class="form-control" />
+                <select class="form-control" asp-for="Boat_media_type">
+                    @foreach (var type in ViewBag.Mediatype as IEnumerable<SelectListItem>)
+                    {
+                        <option value="@type.Value">@type.Text</option>
+                    }
+                </select>
                 <span asp-validation-for="Boat_media_type" class="text-danger"></span>
             </div>
             <div class="form-group">

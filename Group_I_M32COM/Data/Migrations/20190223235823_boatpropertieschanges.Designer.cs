@@ -4,14 +4,16 @@ using Group_I_M32COM.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Group_I_M32COM.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190223235823_boatpropertieschanges")]
+    partial class boatpropertieschanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -407,7 +409,7 @@ namespace Group_I_M32COM.Data.Migrations
 
             modelBuilder.Entity("Group_I_M32COM.DbTableModel.Boat_media", b =>
                 {
-                    b.HasOne("Group_I_M32COM.DbTableModel.Boat", "Boat")
+                    b.HasOne("Group_I_M32COM.DbTableModel.Boat")
                         .WithMany("Boat_Medias")
                         .HasForeignKey("BoatId");
                 });

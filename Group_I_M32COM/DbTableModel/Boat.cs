@@ -35,6 +35,7 @@ namespace Group_I_M32COM.DbTableModel
         [Display(Name = "Boat description")]
         public string Boat_description { get; set; }
 
+        [Display(Name = "Boat Media Type")]
         public int Boat_media_type { get; set; }
 
         [Display(Name = "Date Added")]

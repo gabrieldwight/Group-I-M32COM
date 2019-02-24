@@ -1,4 +1,5 @@
-﻿using Group_I_M32COM.Models;
+﻿using Group_I_M32COM.DbTableModel;
+using Group_I_M32COM.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -267,6 +268,56 @@ namespace Group_I_M32COM.Data
                         await userManager.AddPasswordAsync(user, password);
                         await userManager.AddToRoleAsync(user, Role_Enum.Admin.ToString());
                     }
+                }
+            }
+
+            // Creating a list sample data to the respective table
+            List<Boat_media_type> boat_Media_Types = new List<Boat_media_type>()
+            {
+                // First media
+                new Boat_media_type
+                {
+                    Boat_media_type_name = "Text",
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                },
+                // Second media
+                new Boat_media_type
+                {
+                    Boat_media_type_name = "Image",
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                },
+                // Third media
+                new Boat_media_type
+                {
+                    Boat_media_type_name = "Video",
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                }
+            };
+
+            // Seeding the created multiple list data into multiple tables
+            using (var dbContextTransaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    // Seeding the boat media type sample data
+                    foreach (var bm in boat_Media_Types)
+                    {
+                        // To check if the boat media type name exists on runtime to avoid duplicate entry in the database
+                        if (context.Boat_Media_Types.SingleOrDefault(b => b.Boat_media_type_name == bm.Boat_media_type_name) == null)
+                        {
+                            context.Add(bm);
+                        }
+                    }                
+                    context.SaveChanges();
+
+                    // Commit the transaction in the above number operations of the database context
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error: " + e);
+                    // In case of errors committed in the transaction. Changes will be rollback to the previous state
+                    dbContextTransaction.Rollback();
                 }
             }
         }
