@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
 }
 
 <h2>Edit</h2>
@@ -29,6 +30,16 @@
                 <span asp-validation-for="Boat_weight" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Boat_Types" class="control-label"></label>
+                <select class="form-control" asp-for="Boat_Types">
+                    @foreach (var type in ViewBag.Boat_Category_type as IEnumerable<SelectListItem>)
+                    {
+                        <option value="@type.Value">@type.Text</option>
+                    }
+                </select>
+                <span asp-validation-for="Boat_media_type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Boat_description" class="control-label"></label>
                 <input asp-for="Boat_description" class="form-control" />
                 <span asp-validation-for="Boat_description" class="text-danger"></span>
@@ -44,7 +55,7 @@
                 <span asp-validation-for="Boat_media_type" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>

@@ -23,7 +23,7 @@ namespace Group_I_M32COM.DbTableModel
         [Display(Name = "Boat Top Speed")]
         public string Boat_top_speed { get; set; }
 
-        [Required(ErrorMessage = "Please enter voat weight")]
+        [Required(ErrorMessage = "Please enter boat weight")]
         [DataType(DataType.Text)]
         [StringLength(10, ErrorMessage = "The minimum {2} and Maximum {1} characters are allowed", MinimumLength = 3)]
         [Display(Name = "Boat Weight")]

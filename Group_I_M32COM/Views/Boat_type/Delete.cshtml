@@ -1,4 +1,4 @@
-﻿@model Group_I_M32COM.DbTableModel.Boat
+﻿@model Group_I_M32COM.DbTableModel.Boat_type
 
 @{
     ViewData["Title"] = "Delete";
@@ -9,32 +9,14 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Boat</h4>
+    <h4>Boat_type</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Boat_name)
+            @Html.DisplayNameFor(model => model.Boat_class_type)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Boat_name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Boat_top_speed)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Boat_top_speed)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Boat_weight)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Boat_weight)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Boat_description)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Boat_description)
+            @Html.DisplayFor(model => model.Boat_class_type)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Created_At)

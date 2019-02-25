@@ -53,11 +53,33 @@ namespace Group_I_M32COM.Controllers
         // This action method is responsible to display the create form
         public IActionResult Create()
         {
-            // To load the available media options from the database
-            var media_data = _context.Boat_Media_Types
-                .Select(m => new SelectListItem { Text = m.Boat_media_type_name, Value = m.Id.ToString() })
-                .ToList();
-            ViewBag.Mediatype = media_data;
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    // To load the available media options from the database
+                    var media_data = _context.Boat_Media_Types
+                        .Select(m => new SelectListItem { Text = m.Boat_media_type_name, Value = m.Id.ToString() })
+                        .ToList();
+                    media_data.Insert(0, new SelectListItem { Text = "Please select media category", Value = string.Empty });
+                    ViewBag.Mediatype = media_data;
+
+                    // To load the boat class category
+                    var boat_category_data = _context.Boat_Types
+                        .Select(c => new SelectListItem { Text = c.Boat_class_type, Value = c.Id.ToString() })
+                        .ToList();
+                    boat_category_data.Insert(0, new SelectListItem { Text = "Please select boat class category", Value = string.Empty });
+                    ViewBag.Boat_Category_type = boat_category_data;
+                    // Commit the transaction in the above number operations of the database context
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error: " + e);
+                    // In case of errors committed in the transaction. Changes will be rollback to the previous state
+                    dbContextTransaction.Rollback();
+                }
+            }
             return View();
         }
 
@@ -71,33 +93,36 @@ namespace Group_I_M32COM.Controllers
         {
             boat.Boat_Medias = new List<Boat_media>();
             // For the image upload to work we needed to add enctype="multipart/form-data" in the form tag.
-            foreach (var boat_image in Selected_files)
+            if (Selected_files != null)
             {
-                if (boat_image.Length > 0)
+                foreach (var boat_image in Selected_files)
                 {
-                    var filename = Path.GetFileName(boat_image.FileName);
-                    // Get root path directory
-                    var rootpath = Path.Combine(_environment.WebRootPath, "Application_Files\\BoatImages\\");
-                    // To check if directory exists. If the directory does not exists we create a new directory
-                    if (!Directory.Exists(rootpath))
+                    if (boat_image.Length > 0)
                     {
-                        Directory.CreateDirectory(rootpath);
-                    }
-                    // Get the path of filename
-                    var filepath = Path.Combine(_environment.WebRootPath, "Application_Files\\BoatImages\\", filename);
-                    // Copy the image file to target directory path
-                    using (var stream = new FileStream(filepath, FileMode.Create))
-                    {
-                        await boat_image.CopyToAsync(stream);
-                    }
+                        var filename = Path.GetFileName(boat_image.FileName);
+                        // Get root path directory
+                        var rootpath = Path.Combine(_environment.WebRootPath, "Application_Files\\BoatImages\\");
+                        // To check if directory exists. If the directory does not exists we create a new directory
+                        if (!Directory.Exists(rootpath))
+                        {
+                            Directory.CreateDirectory(rootpath);
+                        }
+                        // Get the path of filename
+                        var filepath = Path.Combine(_environment.WebRootPath, "Application_Files\\BoatImages\\", filename);
+                        // Copy the image file to target directory path
+                        using (var stream = new FileStream(filepath, FileMode.Create))
+                        {
+                            await boat_image.CopyToAsync(stream);
+                        }
 
-                    // To add the image filepath to the table model property before inserting to the database.
-                    boat.Boat_Medias.Add(new Boat_media
-                    {
-                        Boat_media_url = "~/Application_Files/BoatImages/" + filename,
-                        Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
-                    });
-                    boat.Boat_Medias.Count();
+                        // To add the number of image filepath to the table model property before inserting to the database.
+                        boat.Boat_Medias.Add(new Boat_media
+                        {
+                            Boat_media_url = "~/Application_Files/BoatImages/" + filename,
+                            Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                        });
+                        boat.Boat_Medias.Count();
+                    }
                 }
             }
             if (ModelState.IsValid)
@@ -124,11 +149,31 @@ namespace Group_I_M32COM.Controllers
             {
                 return NotFound();
             }
-            // To load the available media options from the database
-            var media_data = await _context.Boat_Media_Types
-                .Select(m => new SelectListItem { Text = m.Boat_media_type_name, Value = m.Id.ToString() })
-                .ToListAsync();
-            ViewBag.Mediatype = media_data;
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    // To load the available media options from the database
+                    var media_data = _context.Boat_Media_Types
+                        .Select(m => new SelectListItem { Text = m.Boat_media_type_name, Value = m.Id.ToString() })
+                        .ToList();
+                    ViewBag.Mediatype = media_data;
+
+                    // To load the boat class category
+                    var boat_category_data = _context.Boat_Types
+                        .Select(c => new SelectListItem { Text = c.Boat_class_type, Value = c.Id.ToString() })
+                        .ToList();
+                    ViewBag.Boat_Category_type = boat_category_data;
+                    // Commit the transaction in the above number operations of the database context
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error: " + e);
+                    // In case of errors committed in the transaction. Changes will be rollback to the previous state
+                    dbContextTransaction.Rollback();
+                }
+            }
             return View(boat);
         }
 
@@ -197,8 +242,11 @@ namespace Group_I_M32COM.Controllers
             {
                 try
                 {
+                    // Delete the boat record from the boat table
                     var boat = await _context.Boats.FindAsync(id);
                     _context.Boats.Remove(boat);
+
+                    // To get the related boat ID Foreign key from the boat media table
                     var boat_media = _context.Boat_Medias.Where(b => b.Boat.Id == boat.Id);
                     foreach (var boat_image in boat_media)
                     {
