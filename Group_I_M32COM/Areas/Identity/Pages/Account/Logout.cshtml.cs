@@ -29,6 +29,15 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
+            // To get the current user logging out from the admin page or the client page
+            var user_details = await _signInManager.UserManager.GetUserAsync(User);
+            user_details.Login_Status = false;
+            user_details.Last_Login = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
+            
+            // Update the user table properties of the current user using user_details object 
+            await _signInManager.UserManager.UpdateAsync(user_details);
+
+            // using the identityframework object of _signInManager to logout the user
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
