@@ -46,11 +46,27 @@ namespace Group_I_M32COM.Controllers
         // GET: Events/Create
         public IActionResult Create()
         {
-            var boat_type = _context.Boat_Types
-                .Select(a => new SelectListItem {Text = a.Boat_class_type, Value = a.Id.ToString()})
-                .ToList();
-            boat_type.Insert(0, new SelectListItem { Text = "Select Boat Type", Value = string.Empty });
-            ViewBag.Boat_type = boat_type;
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var boat_type = _context.Boat_Types
+                        .Select(a => new SelectListItem { Text = a.Boat_class_type, Value = a.Id.ToString() })
+                        .ToList();
+                    boat_type.Insert(0, new SelectListItem { Text = "Select Boat Type", Value = string.Empty });
+                    ViewBag.Boat_type = boat_type;
+
+                    // Commit the transaction in the above number operations of the database context
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error: " + e);
+                    // In case of errors committed in the transaction. Changes will be rollback to the previous state
+                    dbContextTransaction.Rollback();
+                }
+            }
+                
             return View();
         }
 
@@ -63,6 +79,8 @@ namespace Group_I_M32COM.Controllers
         {
             if (ModelState.IsValid)
             {
+                // To pass the creation date on system time
+                @event.Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
                 _context.Add(@event);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -102,7 +120,10 @@ namespace Group_I_M32COM.Controllers
             {
                 try
                 {
+                    // To set the system time for record update
+                    @event.Updated_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
                     _context.Update(@event);
+                    _context.Entry(@event).Property(x => x.Created_At).IsModified = false; // To prevent the datetime property to be set as null on update operation 
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
