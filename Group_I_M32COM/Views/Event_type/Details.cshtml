@@ -1,0 +1,37 @@
+﻿@model Group_I_M32COM.DbTableModel.Event_type
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Event_type</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Event_type_name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Event_type_name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Created_At)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Created_At)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Updated_At)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Updated_At)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
