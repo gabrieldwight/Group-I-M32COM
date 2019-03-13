@@ -17,5 +17,6 @@ namespace Group_I_M32COM.DbTableModel
 
         // Foreign key for Event types
         public Event_type Event_Types { get; set; }
+        public Boat_type boat_type { get; set; }
     }
 }

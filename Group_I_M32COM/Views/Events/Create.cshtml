@@ -1,0 +1,69 @@
+﻿@model Group_I_M32COM.DbTableModel.Event
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<h2>Create</h2>
+
+<h4>Event</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Event_name" class="control-label"></label>
+                <input asp-for="Event_name" class="form-control" />
+                <span asp-validation-for="Event_name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Event_description" class="control-label"></label>
+                <input asp-for="Event_description" class="form-control" />
+                <span asp-validation-for="Event_description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Event_Start_date" class="control-label"></label>
+                <input asp-for="Event_Start_date" class="form-control" />
+                <span asp-validation-for="Event_Start_date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Event_End_date" class="control-label"></label>
+                <input asp-for="Event_End_date" class="form-control" />
+                <span asp-validation-for="Event_End_date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Created_At" class="control-label"></label>
+                <input asp-for="Created_At" class="form-control" />
+                <span asp-validation-for="Created_At" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Updated_At" class="control-label"></label>
+                <input asp-for="Updated_At" class="form-control" />
+                <span asp-validation-for="Updated_At" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+            <div class="form-group">
+                <label asp-for="boat_type.Boat_class_type" class="control-label"></label>
+                <select class="form-control" asp-for="boat_type.Boat_class_type">
+                    @foreach (var type in ViewBag.Boat_Category_type as IEnumerable<SelectListItem>)
+                    {
+                        <option value="@type.Value">@type.Text</option>
+                    }
+                </select>
+                <span asp-validation-for="boat_type.Boat_class_type" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
