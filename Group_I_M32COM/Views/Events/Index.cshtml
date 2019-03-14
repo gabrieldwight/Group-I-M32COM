@@ -19,13 +19,20 @@
                                   Role_Name = r.Name
 
                               };
-        
-        Layout = "~/Views/Competitor/_EventLayout.cshtml";
+        foreach (var item in applicationUser)
+        {
+            if (item.Role_Name == "User")
+            {
+                Layout = "~/Views/Competitor/_EventLayout.cshtml";
+            }
+            else
+            {
+                Layout = "~/Views/Admin/_AdminLayout.cshtml";
+            }
+        }
+
     }
-    else
-    {
-        Layout = "~/Views/Admin/_AdminLayout.cshtml";
-    }
+
 }
 
 <h2>Index</h2>
