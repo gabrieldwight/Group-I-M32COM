@@ -105,7 +105,9 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
                             // to redirect logged user to normal page based on the user assigned role
                             if (user_roles.Single().Equals("User", StringComparison.OrdinalIgnoreCase))
                             {
-                                return LocalRedirect(returnUrl);
+                                user_details.Login_Status = true;
+                                await _signInManager.UserManager.UpdateAsync(user_details);
+                                return RedirectToAction("AdminIndex", "User");
                             }
                         }
                     }

@@ -2,7 +2,25 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+    if (SignInManager.IsSignedIn(User))
+    {
+        string user_id = UserManager.GetUserId(User);
+        var applicationUser = from r in _context.Roles
+                                          join ru in _context.UserRoles on r.id equals ru.RoleId
+                                          join u in _context.Users on ru.UserId equals u.Id
+                                          where u.Id == user_id
+                                          select new User_RoleModel
+                                          {
+                                              Role_Name = r.Name
+
+                                          };
+                                       
+        Layout = "~/Views/Competitor/_EventLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Admin/_AdminLayout.cshtml";
+    }
 }
 
 <h2>Index</h2>
