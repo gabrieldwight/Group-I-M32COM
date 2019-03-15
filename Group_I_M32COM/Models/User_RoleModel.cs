@@ -16,6 +16,7 @@ namespace Group_I_M32COM.Models
         public string User_Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+        public string Address { get; set; }
 
         [Display(Name = "Date Added")]
         public DateTime? Created_At { get; set; }
