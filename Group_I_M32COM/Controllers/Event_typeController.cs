@@ -19,7 +19,7 @@ namespace Group_I_M32COM.Controllers
             _context = context;
         }
 
-        // GET: Event_type
+        // GET: Event_type: loads the page view of details of event type
         public async Task<IActionResult> Index()
         {
             return View(await _context.Event_Types.ToListAsync());
@@ -43,7 +43,7 @@ namespace Group_I_M32COM.Controllers
             return View(event_type);
         }
 
-        // GET: Event_type/Create
+        // GET: Event_type/Create : loads page displaying form for creating new event type record
         public IActionResult Create()
         {
             return View();
