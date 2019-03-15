@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Group_I_M32COM.DbTableModel.Event>
+
+@{
+    ViewData["Title"] = "Events";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--h2>Events</!--h2>
+
+<div>
+    <h4>Event</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @foreach (var item in Model)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Event_name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => item.Event_name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Event_description)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => item.Event_description)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Event_Start_date)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => item.Event_Start_date)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Event_End_date)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => item.Event_End_date)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Created_At)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => item.Created_At)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Updated_At)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => item.Updated_At)
+            </dd>
+        }
+    </dl>
+</div-->
+
+<h1 class="text-center">List of Upcoming events</h1>
+
+<div class="container">
+    <div class="row">
+
+        <!--Event items-->
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-4">
+                <div class="our-team-main">
+
+                    <div class="team-front">
+                        <img src="http://placehold.it/110x110/9c27b0/fff?text=@Html.DisplayFor(model => item.Event_name)" class="img-fluid" />
+                        <h3>@Html.DisplayFor(model => item.Event_name)</h3>
+                        <p>@Html.DisplayFor(model => item.Event_Start_date) - @Html.DisplayFor(model => item.Event_End_date)</p>
+                    </div>
+
+                    <div class="team-back">
+                        <span>
+                            @Html.DisplayFor(model => item.Event_description)
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+            <!--Events items-->
+        }
+    </div>
+</div>
