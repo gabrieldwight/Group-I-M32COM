@@ -22,6 +22,7 @@ namespace Group_I_M32COM.Controllers
         // GET: Events
         public async Task<IActionResult> Index()
         {
+
             return View(await _context.Events.ToListAsync());
         }
 
