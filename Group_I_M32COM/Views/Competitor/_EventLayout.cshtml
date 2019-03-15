@@ -5,145 +5,164 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject ApplicationDbContext _context
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="~/favicon.ico">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="~/favicon.ico">
 
-    <title>@ViewData["Title"] - Group_I_M32COM</title>
+        <title>@ViewData["Title"] - Group_I_M32COM</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <!-- Bootstrap core CSS -->
+        <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="~/css/dashboard.css" rel="stylesheet">
-</head>
+        <!-- Custom styles for this template -->
+        <link href="~/css/dashboard.css" rel="stylesheet">
+    </head>
 
-<body>
-    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Group_I_M32COM</a>
-        <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-        @if (SignInManager.IsSignedIn(User))
-        {
-            <ul class="navbar-nav px-3">
-                <li class="nav-item text-nowrap">
-                    <a class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Sign out</a>
-                </li>
-            </ul>
-        }
-    </nav>
+    <body>
+        <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+            <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Group_I_M32COM</a>
+            <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <ul class="navbar-nav px-3">
+                    <li class="nav-item text-nowrap">
+                        <a class="nav-link" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Sign out</a>
+                    </li>
+                </ul>
+            }
+        </nav>
 
-    <div class="container-fluid">
-        <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="sidebar-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="home"></span>
-                                Dashboard Home <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" is-active-route asp-controller="Admin" asp-action="AdminIndex">
-                                <span data-feather="users"></span>
-                                User Profile
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="users"></span>
-                                Registration for event
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" is-active-route asp-controller="Boat_type" asp-action="Index">
-                                <span data-feather="shopping-cart"></span>
-                                Ranking in competitions
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" is-active-route asp-controller="Boats" asp-action="Index">
-                                <span data-feather="shopping-cart"></span>
-                                Promotions
-                            </a>
-                        </li>
-                       
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" is-active-route asp-controller="Events" asp-action="Index">
-                                <span data-feather="calendar"></span>
-                                Events 
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                    <div class="sidebar-sticky">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span data-feather="home"></span>
+                                    Dashboard Home <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                @{
+                                    if (SignInManager.IsSignedIn(User))
+                                    {
+                                        string user_id = UserManager.GetUserId(User);
+                                        var applicationUser = from r in _context.Roles
+                                                              join ru in _context.UserRoles on r.Id equals ru.RoleId
+                                                              join u in _context.Users on ru.UserId equals u.Id
+                                                              where u.Id == user_id
+                                                              select new User_RoleModel
+                                                              {
+                                                                  User_Id = u.Id
+                                                              };
+                                    foreach (var item in applicationUser)
+                                    {
+                                        ViewBag.i = item.User_Id.ToString();
+                                    }
+                                }
+                                }
 
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        string user_id = UserManager.GetUserId(User);
-                        ApplicationUser applicationUser = _context.Users.FirstOrDefault(x => x.Id == user_id);
-                        <h1 class="h2">@ViewData["Title"] - Hello @applicationUser.FirstName @applicationUser.LastName</h1>
-                    }
+                                <a class="nav-link" asp-area="" is-active-route asp-controller="Competitor" asp-action="Details" asp-route-id="@ViewBag.i">
+                                    <span data-feather="users"></span>
+                                    User Profile
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">
+                                    <span data-feather="users"></span>
+                                    Registration for event
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" is-active-route asp-controller="Boat_type" asp-action="Index">
+                                    <span data-feather="shopping-cart"></span>
+                                    Ranking in competitions
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" is-active-route asp-controller="Boats" asp-action="Index">
+                                    <span data-feather="shopping-cart"></span>
+                                    Promotions
+                                </a>
+                            </li>
 
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <div class="btn-group mr-2">
-                            <button class="btn btn-sm btn-outline-secondary">Share</button>
-                            <button class="btn btn-sm btn-outline-secondary">Export</button>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                            <span data-feather="calendar"></span>
-                            This week
-                        </button>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" is-active-route asp-controller="Events" asp-action="Index">
+                                    <span data-feather="calendar"></span>
+                                    Events
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                </div>
-                <partial name="_StatusMessages" />
-                @RenderBody()
-            </main>
+                </nav>
+
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            string user_id = UserManager.GetUserId(User);
+                            ApplicationUser applicationUser = _context.Users.FirstOrDefault(x => x.Id == user_id);
+                            <h1 class="h2">@ViewData["Title"] - Hello @applicationUser.FirstName @applicationUser.LastName</h1>
+                        }
+
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <div class="btn-group mr-2">
+                                <button class="btn btn-sm btn-outline-secondary">Share</button>
+                                <button class="btn btn-sm btn-outline-secondary">Export</button>
+                            </div>
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                                <span data-feather="calendar"></span>
+                                This week
+                            </button>
+                        </div>
+                    </div>
+                    <partial name="_StatusMessages" />
+                    @RenderBody()
+                </main>
+            </div>
         </div>
-    </div>
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-                integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-                crossorigin="anonymous">
-        </script>
-        <script src="~/lib/bootstrap/js/bootstrap.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-    </environment>
-    <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
-                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-                asp-fallback-test="window.jQuery"
-                crossorigin="anonymous"
-                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
-        </script>
-        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
-        </script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-    </environment>
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <environment include="Development">
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+            <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+            <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+                    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+                    crossorigin="anonymous">
+            </script>
+            <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+        </environment>
+        <environment exclude="Development">
+            <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                    asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                    asp-fallback-test="window.jQuery"
+                    crossorigin="anonymous"
+                    integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+            </script>
+            <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                    asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                    asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                    crossorigin="anonymous"
+                    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+            </script>
+            <script src="~/js/site.min.js" asp-append-version="true"></script>
+        </environment>
 
-    <!-- Icons -->
-    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-    <script>
-        feather.replace()
-    </script>
-    @RenderSection("Scripts", required: false)
-</body>
+        <!-- Icons -->
+        <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+        <script>
+            feather.replace()
+        </script>
+        @RenderSection("Scripts", required: false)
+    </body>
 </html>
