@@ -43,7 +43,7 @@
       ]
     },
     {
-      "library": "font-awesome@4.7.0",
+      "library": "font-awesome@5.7.2",
       "destination": "wwwroot/lib/font-awesome/"
     }
   ]
