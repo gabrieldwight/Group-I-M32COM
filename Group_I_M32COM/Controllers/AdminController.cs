@@ -5,9 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Group_I_M32COM.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Group_I_M32COM.Controllers
 {
+    /* We use the Authroize Data Annotation to assign the role based authorization in AdminController access level
+       The authorize data annotation will check if the user is logged and retrieves the user role
+       If the user is not logged in it will redirect the user to the login page */
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         // Instantiate the constructor for the ApplicationDb context

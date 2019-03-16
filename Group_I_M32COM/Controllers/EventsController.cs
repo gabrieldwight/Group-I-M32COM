@@ -7,9 +7,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Group_I_M32COM.Data;
 using Group_I_M32COM.DbTableModel;
+using Microsoft.AspNetCore.Authorization;
+using Group_I_M32COM.Extensions.Alerts;
 
 namespace Group_I_M32COM.Controllers
 {
+    /* We use the Authroize Data Annotation to assign the role based authorization in EventsController access level
+       The authorize data annotation will check if the user is logged and retrieves the user role
+       If the user is not logged in it will redirect the user to the login page */
+    [Authorize(Roles = "Admin")]
     public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -83,7 +89,7 @@ namespace Group_I_M32COM.Controllers
                 @event.Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
                 _context.Add(@event);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index)).WithSuccess("Success", "Successfully Inserted Event Details");
             }
             return View(@event);
         }
@@ -137,7 +143,7 @@ namespace Group_I_M32COM.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index)).WithSuccess("Success", "Successfully Updated Event Details");
             }
             return View(@event);
         }
@@ -168,7 +174,7 @@ namespace Group_I_M32COM.Controllers
             var @event = await _context.Events.FindAsync(id);
             _context.Events.Remove(@event);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index)).WithSuccess("Success", "Successfully Deleted Event Details");
         }
 
         private bool EventExists(int id)
