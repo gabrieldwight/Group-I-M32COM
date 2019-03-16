@@ -28,7 +28,11 @@ namespace Group_I_M32COM.Controllers
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Events.ToListAsync());
+            // To read related data from the event_type table and boat_type table to display event details
+            var _events = _context.Events
+                .Include(e => e.Event_Types)
+                .Include(b => b.Boat_Types);
+            return View(await _events.ToListAsync());
         }
 
         // GET: Events/Details/5
@@ -91,8 +95,30 @@ namespace Group_I_M32COM.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Event_name,Event_description,Event_Start_date,Event_End_date,Created_At,Updated_At")] Event @event)
+        public async Task<IActionResult> Create([Bind("Id,Event_name,Event_description,Event_Start_date,Event_End_date,Created_At,Updated_At")] Event @event, string Event_Types, string Boat_Types)
         {
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    /* To return the selected event_type name and boat_type class from the database if it exists*/
+                    var get_event_type = _context.Event_Types.SingleOrDefault(x => x.Id == Convert.ToInt32(Event_Types));
+                    @event.Event_Types = get_event_type;
+
+                    var get_boat_type = _context.Boat_Types.SingleOrDefault(x => x.Id == Convert.ToInt32(Boat_Types));
+                    @event.Boat_Types = get_boat_type;
+
+                    // Commit the transaction in the above number operations of the database context
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error: " + e);
+                    // In case of errors committed in the transaction. Changes will be rollback to the previous state
+                    dbContextTransaction.Rollback();
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 // To pass the creation date on system time
