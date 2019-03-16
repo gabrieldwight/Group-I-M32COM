@@ -24,13 +24,11 @@ namespace Group_I_M32COM.DbTableModel
 
         [Required(ErrorMessage = "Please select the event start date")]
         [DataType(DataType.Date)]
-        [StringLength(50, ErrorMessage = "The minimum {2} and Maximum {1} characters are allowed", MinimumLength = 3)]
         [Display(Name = "Event Start Date")]
         public DateTime? Event_Start_date { get; set; }
 
         [Required(ErrorMessage = "Please select the event end date")]
         [DataType(DataType.Date)]
-        [StringLength(50, ErrorMessage = "The minimum {2} and Maximum {1} characters are allowed", MinimumLength = 3)]
         [Display(Name = "Event End Date")]
         public DateTime? Event_End_date { get; set; }
 
@@ -41,12 +39,10 @@ namespace Group_I_M32COM.DbTableModel
         public DateTime? Updated_At { get; set; }
 
         // Foreign key for Event types
-        [Required(ErrorMessage = "Please select the type of event")]
         [Display(Name = "Type of event")]
         public Event_type Event_Types { get; set; }
 
         // Foreign key for boat categories types
-        [Required(ErrorMessage = "Please select the class of boat category")]
         [Display(Name = "Boat Category")]
         public Boat_type Boat_Types { get; set; }
     }
