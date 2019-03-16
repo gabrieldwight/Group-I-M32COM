@@ -46,9 +46,10 @@ namespace Group_I_M32COM.DbTableModel
         public DateTime? Updated_At { get; set; }
 
         // Foreign key for boat categories and Sub boat categories types
-        [Required(ErrorMessage = "Please select the class of boat category")]
         [Display(Name = "Boat Category")]
         public Boat_type Boat_Types { get; set; }
+
+        [Display(Name = "Boat Sub Category")]
         public Sub_boat_type Sub_Boat_Types { get; set; }
 
         // Foreign key definition one boat can have many boat media
