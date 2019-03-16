@@ -33,7 +33,11 @@ namespace Group_I_M32COM.Controllers
         // GET: Boats
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Boats.ToListAsync());
+            // To read related data from the boat_type table and sub_boat_type table to display Boat details
+            var _boats = _context.Boats
+                .Include(boat_category => boat_category.Boat_Types)
+                .Include(sub_boat_category => sub_boat_category.Sub_Boat_Types);
+            return View(await _boats.ToListAsync());
         }
 
         // GET: Boats/Details/5
@@ -70,11 +74,12 @@ namespace Group_I_M32COM.Controllers
                     ViewBag.Mediatype = media_data;
 
                     // To load the boat class category
-                    var boat_category_data = _context.Boat_Types
-                        .Select(c => new SelectListItem { Text = c.Boat_class_type, Value = c.Id.ToString() })
+                    var sub_boat_category_data = _context.Sub_Boat_Types
+                        .Select(c => new SelectListItem { Text = c.Sub_boat_class_type, Value = c.Id.ToString() })
                         .ToList();
-                    boat_category_data.Insert(0, new SelectListItem { Text = "Please select boat class category", Value = string.Empty });
-                    ViewBag.Boat_Category_type = boat_category_data;
+                    sub_boat_category_data.Insert(0, new SelectListItem { Text = "Please select sub boat class category", Value = string.Empty });
+                    ViewBag.Sub_Boat_Category_type = sub_boat_category_data;
+
                     // Commit the transaction in the above number operations of the database context
                     dbContextTransaction.Commit();
                 }
@@ -94,7 +99,7 @@ namespace Group_I_M32COM.Controllers
         // Binding the image upload to controller through the user Iformfile interface
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Boat_name,Boat_top_speed,Boat_weight,Boat_description,Boat_media_type,Created_At,Updated_At")] Boat boat, List<IFormFile> Selected_files)
+        public async Task<IActionResult> Create([Bind("Id,Boat_name,Boat_top_speed,Boat_weight,Boat_description,Boat_media_type,Created_At,Updated_At")] Boat boat, List<IFormFile> Selected_files, string Sub_Boat_Types)
         {
             boat.Boat_Medias = new List<Boat_media>();
             // For the image upload to work we needed to add enctype="multipart/form-data" in the form tag.
@@ -130,6 +135,14 @@ namespace Group_I_M32COM.Controllers
                     }
                 }
             }
+
+            /* To return the selected boat_type class and sub boat_type class from the database if it exists*/
+            var get_boat_type = _context.Sub_Boat_Types
+                .Include(boat_parent_category => boat_parent_category.Boat_Types)
+                .SingleOrDefault(x => x.Id == Convert.ToInt32(Sub_Boat_Types));
+            boat.Sub_Boat_Types = get_boat_type;
+            boat.Boat_Types = get_boat_type.Boat_Types;
+
             if (ModelState.IsValid)
             {
                 // To pass the creation date on system time
@@ -149,26 +162,42 @@ namespace Group_I_M32COM.Controllers
                 return NotFound();
             }
 
-            var boat = await _context.Boats.FindAsync(id);
+            //var boat = await _context.Boats.FindAsync(id);
+            var boat = await _context.Boats
+                .Include(sb => sb.Sub_Boat_Types)
+                .FirstOrDefaultAsync(i => i.Id == id);
             if (boat == null)
             {
                 return NotFound();
             }
+
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
                 try
                 {
                     // To load the available media options from the database
                     var media_data = _context.Boat_Media_Types
-                        .Select(m => new SelectListItem { Text = m.Boat_media_type_name, Value = m.Id.ToString() })
+                        .Select(m => new SelectListItem
+                        {
+                            Text = m.Boat_media_type_name,
+                            Value = m.Id.ToString(),
+                            Selected = m.Id == boat.Boat_media_type ? true : false
+                        })
                         .ToList();
+                    media_data.Insert(0, new SelectListItem { Text = "Please select media category", Value = string.Empty });
                     ViewBag.Mediatype = media_data;
 
                     // To load the boat class category
-                    var boat_category_data = _context.Boat_Types
-                        .Select(c => new SelectListItem { Text = c.Boat_class_type, Value = c.Id.ToString() })
-                        .ToList();
-                    ViewBag.Boat_Category_type = boat_category_data;
+                    var sub_boat_category_data = _context.Sub_Boat_Types
+                       .Select(c => new SelectListItem
+                       {
+                           Text = c.Sub_boat_class_type,
+                           Value = c.Id.ToString(),
+                           Selected = c.Id == boat.Sub_Boat_Types.Id ? true : false
+                       })
+                       .ToList();
+                    sub_boat_category_data.Insert(0, new SelectListItem { Text = "Please select sub boat class category", Value = string.Empty });
+                    ViewBag.Sub_Boat_Category_type = sub_boat_category_data;
                     // Commit the transaction in the above number operations of the database context
                     dbContextTransaction.Commit();
                 }
@@ -187,12 +216,19 @@ namespace Group_I_M32COM.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Boat_name,Boat_top_speed,Boat_weight,Boat_description,Boat_media_type,Created_At,Updated_At")] Boat boat)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Boat_name,Boat_top_speed,Boat_weight,Boat_description,Boat_media_type,Created_At,Updated_At")] Boat boat, string Sub_Boat_Types)
         {
             if (id != boat.Id)
             {
                 return NotFound();
             }
+
+            /* To return the selected boat_type class and sub boat_type class from the database if it exists*/
+            var get_boat_type = _context.Sub_Boat_Types
+                .Include(boat_parent_category => boat_parent_category.Boat_Types)
+                .SingleOrDefault(x => x.Id == Convert.ToInt32(Sub_Boat_Types));
+            boat.Sub_Boat_Types = get_boat_type;
+            boat.Boat_Types = get_boat_type.Boat_Types;
 
             if (ModelState.IsValid)
             {
