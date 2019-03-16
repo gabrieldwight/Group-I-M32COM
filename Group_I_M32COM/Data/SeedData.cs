@@ -27,7 +27,7 @@ namespace Group_I_M32COM.Data
             string role2 = "Member";
             string desc2 = "This is the members role";
 
-            string password = "P@$$w0rd";
+            string password = "Admin_1";
 
             // To check if the admin role exists in the database
             /*if (await roleManager.FindByNameAsync(role1) == null)
@@ -194,10 +194,10 @@ namespace Group_I_M32COM.Data
                 // First User
                 new ApplicationUser
                 {
-                    UserName = "rtesting@test.com",
-                    Email = "rtesting@test.com",
-                    FirstName = "Adam",
-                    LastName = "Aldridge",
+                    UserName = "gabriel",
+                    Email = "gabriel@test.com",
+                    FirstName = "Gabriel",
+                    LastName = "Odero",
                     Address = "Fake St",
                     City = "Vancouver",
                     PostalCode = "VSU K8I",
@@ -208,10 +208,10 @@ namespace Group_I_M32COM.Data
                 // Second User
                 new ApplicationUser
                 {
-                    UserName = "btesting@test.com",
-                    Email = "btesting@test.com",
-                    FirstName = "Bob",
-                    LastName = "Parker",
+                    UserName = "yamini",
+                    Email = "yamini@test.com",
+                    FirstName = "Yamini",
+                    LastName = "Rathi",
                     Address = "Vermount St",
                     City = "Surrey",
                     PostalCode = "VSU K8I",
@@ -222,10 +222,10 @@ namespace Group_I_M32COM.Data
                 // Third User
                 new ApplicationUser
                 {
-                    UserName = "ctesting@test.com",
-                    Email = "ctesting@test.com",
-                    FirstName = "Smith",
-                    LastName = "Aldridge",
+                    UserName = "nathan",
+                    Email = "nathan@test.com",
+                    FirstName = "Nathan",
+                    LastName = "Zenga",
                     Address = "Yew St",
                     City = "Vancouver",
                     PostalCode = "VSU K8I",
@@ -236,10 +236,10 @@ namespace Group_I_M32COM.Data
                 // Fourth User
                 new ApplicationUser
                 {
-                    UserName = "dtesting@test.com",
-                    Email = "dtesting@test.com",
-                    FirstName = "Chris",
-                    LastName = "Aldridge",
+                    UserName = "umair",
+                    Email = "umair@test.com",
+                    FirstName = "Umair",
+                    LastName = "Zia",
                     Address = "Fake St",
                     City = "Vancouver",
                     PostalCode = "VSU K8I",
