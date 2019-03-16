@@ -43,7 +43,7 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
+            [Display(Name = "Email or Username")]
             public string Email { get; set; }
 
             [Required]
@@ -79,21 +79,33 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+                ApplicationUser user;
+
+                /* To allow the user to login with email or password
+                 */
+                if (Input.Email.Contains("@"))
+                {
+                    user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
+                }
+                else
+                {
+                    user = await _signInManager.UserManager.FindByNameAsync(Input.Email);
+                }
+                var result = await _signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    var user_details = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
-                    if (user_details != null)
+                    //var user_details = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
+                    if (user != null)
                     {
-                        var user_roles = await _signInManager.UserManager.GetRolesAsync(user_details);
+                        var user_roles = await _signInManager.UserManager.GetRolesAsync(user);
                         if (user_roles != null)
                         {
                             // to redirect logged user to admin page based on the user assigned role
                             if (user_roles.Single().Equals("Admin", StringComparison.OrdinalIgnoreCase))
                             {
-                                user_details.Login_Status = true;
-                                await _signInManager.UserManager.UpdateAsync(user_details);
+                                user.Login_Status = true;
+                                await _signInManager.UserManager.UpdateAsync(user);
                                 // The use of the method below is to pass the action method name and the name of the controller
                                 //return RedirectToAction("Index","Boats");
                                 return RedirectToAction("AdminIndex", "Admin");
@@ -105,8 +117,8 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
                             // to redirect logged user to normal page based on the user assigned role
                             if (user_roles.Single().Equals("User", StringComparison.OrdinalIgnoreCase))
                             {
-                                user_details.Login_Status = true;
-                                await _signInManager.UserManager.UpdateAsync(user_details);
+                                user.Login_Status = true;
+                                await _signInManager.UserManager.UpdateAsync(user);
                                 return RedirectToAction("AdminIndex", "User");
                             }
                         }
