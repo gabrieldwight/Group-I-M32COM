@@ -25,6 +25,40 @@
                 <span asp-validation-for="Event_description" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Event_Types" class="control-label"></label>
+                <select class="form-control" asp-for="Event_Types">
+                    @foreach (var type in ViewBag.Event_type as IEnumerable<SelectListItem>)
+                    {
+                        if (type.Selected == true)
+                        {
+                            <option selected value="@type.Value">@type.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@type.Value">@type.Text</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="Event_Types" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Boat_Types" class="control-label"></label>
+                <select class="form-control" asp-for="Boat_Types">
+                    @foreach (var type in ViewBag.Boat_type as IEnumerable<SelectListItem>)
+                    {
+                        if (type.Selected == true)
+                        {
+                            <option selected value="@type.Value">@type.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@type.Value">@type.Text</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="Boat_Types" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Event_Start_date" class="control-label"></label>
                 <input asp-for="Event_Start_date" class="form-control" />
                 <span asp-validation-for="Event_Start_date" class="text-danger"></span>
@@ -35,17 +69,7 @@
                 <span asp-validation-for="Event_End_date" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Created_At" class="control-label"></label>
-                <input asp-for="Created_At" class="form-control" />
-                <span asp-validation-for="Created_At" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Updated_At" class="control-label"></label>
-                <input asp-for="Updated_At" class="form-control" />
-                <span asp-validation-for="Updated_At" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>

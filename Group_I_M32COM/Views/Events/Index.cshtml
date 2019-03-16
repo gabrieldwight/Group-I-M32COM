@@ -50,6 +50,12 @@
                 @Html.DisplayNameFor(model => model.Event_description)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Event_Types)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Boat_Types)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Event_Start_date)
             </th>
             <th>
@@ -67,31 +73,37 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Event_name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Event_description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Event_Start_date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Event_End_date)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Created_At)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Updated_At)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Event_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Event_description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Event_Types.Event_type_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Boat_Types.Boat_class_type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Event_Start_date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Event_End_date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created_At)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Updated_At)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

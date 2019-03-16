@@ -27,6 +27,12 @@
                 @Html.DisplayNameFor(model => model.Boat_description)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Boat_Types.Boat_class_type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sub_Boat_Types.Sub_boat_class_type)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Created_At)
             </th>
             <th>
@@ -49,6 +55,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Boat_description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Boat_Types.Boat_class_type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sub_Boat_Types.Sub_boat_class_type)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Created_At)
