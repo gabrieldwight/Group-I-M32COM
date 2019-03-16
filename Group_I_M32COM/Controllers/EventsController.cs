@@ -138,10 +138,55 @@ namespace Group_I_M32COM.Controllers
                 return NotFound();
             }
 
-            var @event = await _context.Events.FindAsync(id);
+            //var @event = await _context.Events.FindAsync(id);
+            var @event = await _context.Events
+                .Include(et => et.Event_Types)
+                .Include(bt => bt.Boat_Types)
+                .FirstOrDefaultAsync(i => i.Id == id);
             if (@event == null)
             {
                 return NotFound();
+            }
+
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    /* To retrieve the boats available in the Boat_Types table and display the available records 
+                       in the dropdown list*/
+                    var boat_type = _context.Boat_Types
+                        .Select(a => new SelectListItem
+                        {
+                            Text = a.Boat_class_type,
+                            Value = a.Id.ToString(),
+                            Selected = a.Id == @event.Boat_Types.Id ? true : false
+                        })
+                        .ToList();
+                    boat_type.Insert(0, new SelectListItem { Text = "Select Boat Type", Value = string.Empty });
+                    ViewBag.Boat_type = boat_type;
+
+                    /* To retrieve the boats available in the Event_Types table and display the available records 
+                       in the dropdown list*/
+                    var event_type = _context.Event_Types
+                        .Select(e => new SelectListItem
+                        {
+                            Text = e.Event_type_name,
+                            Value = e.Id.ToString(),
+                            Selected = e.Id == @event.Event_Types.Id ? true : false
+                        })
+                        .ToList();
+                    event_type.Insert(0, new SelectListItem { Text = "Select Event Type", Value = string.Empty });
+                    ViewBag.Event_type = event_type;
+
+                    // Commit the transaction in the above number operations of the database context
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error: " + e);
+                    // In case of errors committed in the transaction. Changes will be rollback to the previous state
+                    dbContextTransaction.Rollback();
+                }
             }
             return View(@event);
         }
@@ -151,12 +196,19 @@ namespace Group_I_M32COM.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Event_name,Event_description,Event_Start_date,Event_End_date,Created_At,Updated_At")] Event @event)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Event_name,Event_description,Event_Start_date,Event_End_date,Created_At,Updated_At")] Event @event, string Event_Types, string Boat_Types)
         {
             if (id != @event.Id)
             {
                 return NotFound();
             }
+
+            /* To return the selected event_type name and boat_type class from the database if it exists*/
+            var get_event_type = _context.Event_Types.SingleOrDefault(x => x.Id == Convert.ToInt32(Event_Types));
+            @event.Event_Types = get_event_type;
+
+            var get_boat_type = _context.Boat_Types.SingleOrDefault(x => x.Id == Convert.ToInt32(Boat_Types));
+            @event.Boat_Types = get_boat_type;
 
             if (ModelState.IsValid)
             {
