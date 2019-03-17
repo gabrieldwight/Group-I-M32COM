@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using static Group_I_M32COM.Helpers.Data_RolesEnum;
 
 namespace Group_I_M32COM.Areas.Identity.Pages.Account
 {
@@ -102,7 +103,7 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
                         if (user_roles != null)
                         {
                             // to redirect logged user to admin page based on the user assigned role
-                            if (user_roles.Single().Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                            if (user_roles.Single().Equals(Role_Enum.Admin.ToString(), StringComparison.OrdinalIgnoreCase))
                             {
                                 user.Login_Status = true;
                                 await _signInManager.UserManager.UpdateAsync(user);
@@ -114,12 +115,12 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
                             // to redirect logged user to crew page based on the user assigned role
 
 
-                            // to redirect logged user to normal page based on the user assigned role
-                            if (user_roles.Single().Equals("User", StringComparison.OrdinalIgnoreCase))
+                            // to redirect logged user to competitor page based on the user assigned role
+                            if (user_roles.Single().Equals(Role_Enum.TeamLeader.ToString(), StringComparison.OrdinalIgnoreCase))
                             {
                                 user.Login_Status = true;
                                 await _signInManager.UserManager.UpdateAsync(user);
-                                return RedirectToAction("AdminIndex", "User");
+                                return RedirectToAction("Details", "Competitor", new { user.Id });
                             }
                         }
                     }
