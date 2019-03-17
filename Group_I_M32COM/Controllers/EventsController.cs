@@ -15,7 +15,7 @@ namespace Group_I_M32COM.Controllers
     /* We use the Authroize Data Annotation to assign the role based authorization in EventsController access level
        The authorize data annotation will check if the user is logged and retrieves the user role
        If the user is not logged in it will redirect the user to the login page */
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, TeamLeader")]
     public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
