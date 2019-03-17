@@ -19,12 +19,12 @@ namespace Group_I_M32COM.Helpers
         {
             [Description("This is the administrator role")]
             Admin,
-            [Description("This is the members role")]
-            Member,
+            [Description("This is the team leader role")]
+            TeamLeader,
             [Description("This is the user role")]
             User,
-            [Description("This is the crew role")]
-            Crew
+            [Description("This is the crew member role")]
+            CrewMember
         }
 
         public static class RoleDescriptionNames
