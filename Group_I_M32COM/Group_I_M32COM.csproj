@@ -6,6 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\20190313213757_eventonetomanytest.cs" />
+    <Compile Remove="Data\Migrations\20190313213757_eventonetomanytest.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190317181523_boatcrewandeventparticipation.cs" />
+    <Compile Remove="Data\Migrations\20190317181523_boatcrewandeventparticipation.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190317192150_boatcrewandeventparticipation.cs" />
+    <Compile Remove="Data\Migrations\20190317192150_boatcrewandeventparticipation.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4">
