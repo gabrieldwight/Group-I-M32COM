@@ -66,11 +66,18 @@ namespace Group_I_M32COM.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Boat_crew_address");
+                    b.Property<string>("Boat_crew_address")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<int>("Boat_crew_allocation")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Boat_crew_logo");
 
-                    b.Property<string>("Boat_crew_name");
+                    b.Property<string>("Boat_crew_name")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<string>("Boat_crew_phone");
 
@@ -150,15 +157,21 @@ namespace Group_I_M32COM.Data.Migrations
 
                     b.Property<DateTime?>("Created_At");
 
-                    b.Property<DateTime?>("Event_End_date");
+                    b.Property<DateTime?>("Event_End_date")
+                        .IsRequired();
 
-                    b.Property<DateTime?>("Event_Start_date");
+                    b.Property<DateTime?>("Event_Start_date")
+                        .IsRequired();
 
                     b.Property<int?>("Event_TypesId");
 
-                    b.Property<string>("Event_description");
+                    b.Property<string>("Event_description")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
-                    b.Property<string>("Event_name");
+                    b.Property<string>("Event_name")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<DateTime?>("Updated_At");
 
@@ -171,6 +184,33 @@ namespace Group_I_M32COM.Data.Migrations
                     b.ToTable("Events");
                 });
 
+            modelBuilder.Entity("Group_I_M32COM.DbTableModel.Event_participation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("Created_At");
+
+                    b.Property<int?>("EventId");
+
+                    b.Property<DateTime?>("Updated_At");
+
+                    b.Property<int?>("boat_CrewId");
+
+                    b.Property<int>("points_awarded");
+
+                    b.Property<string>("position");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("boat_CrewId");
+
+                    b.ToTable("Event_Participations");
+                });
+
             modelBuilder.Entity("Group_I_M32COM.DbTableModel.Event_type", b =>
                 {
                     b.Property<int>("Id")
@@ -179,13 +219,38 @@ namespace Group_I_M32COM.Data.Migrations
 
                     b.Property<DateTime?>("Created_At");
 
-                    b.Property<string>("Event_type_name");
+                    b.Property<string>("Event_type_name")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<DateTime?>("Updated_At");
 
                     b.HasKey("Id");
 
                     b.ToTable("Event_Types");
+                });
+
+            modelBuilder.Entity("Group_I_M32COM.DbTableModel.Members", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("Boat_CrewId");
+
+                    b.Property<DateTime?>("Created_At");
+
+                    b.Property<string>("Member_name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime?>("Updated_At");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Boat_CrewId");
+
+                    b.ToTable("Members");
                 });
 
             modelBuilder.Entity("Group_I_M32COM.DbTableModel.Sub_boat_type", b =>
@@ -198,7 +263,9 @@ namespace Group_I_M32COM.Data.Migrations
 
                     b.Property<DateTime?>("Created_At");
 
-                    b.Property<string>("Sub_boat_class_type");
+                    b.Property<string>("Sub_boat_class_type")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<DateTime?>("Updated_At");
 
@@ -421,12 +488,30 @@ namespace Group_I_M32COM.Data.Migrations
             modelBuilder.Entity("Group_I_M32COM.DbTableModel.Event", b =>
                 {
                     b.HasOne("Group_I_M32COM.DbTableModel.Boat_type", "Boat_Types")
-                        .WithMany("Event")
+                        .WithMany("Events")
                         .HasForeignKey("Boat_TypesId");
 
                     b.HasOne("Group_I_M32COM.DbTableModel.Event_type", "Event_Types")
                         .WithMany("Events")
                         .HasForeignKey("Event_TypesId");
+                });
+
+            modelBuilder.Entity("Group_I_M32COM.DbTableModel.Event_participation", b =>
+                {
+                    b.HasOne("Group_I_M32COM.DbTableModel.Event", "Event")
+                        .WithMany("Event_Participations")
+                        .HasForeignKey("EventId");
+
+                    b.HasOne("Group_I_M32COM.DbTableModel.Boat_crew", "boat_Crew")
+                        .WithMany("Event_Participations")
+                        .HasForeignKey("boat_CrewId");
+                });
+
+            modelBuilder.Entity("Group_I_M32COM.DbTableModel.Members", b =>
+                {
+                    b.HasOne("Group_I_M32COM.DbTableModel.Boat_crew", "Boat_Crew")
+                        .WithMany("Members")
+                        .HasForeignKey("Boat_CrewId");
                 });
 
             modelBuilder.Entity("Group_I_M32COM.DbTableModel.Sub_boat_type", b =>
