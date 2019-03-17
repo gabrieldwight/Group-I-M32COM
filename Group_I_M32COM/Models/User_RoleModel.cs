@@ -14,7 +14,21 @@ namespace Group_I_M32COM.Models
         public string Role_Name { get; set; }
 
         public string User_Id { get; set; }
-        public string Name { get; set; }
+
+        [Display(Name = "First Name")]
+        public string First_Name { get; set; }
+
+        [Display(Name = "Last Name")]
+        public string Last_Name { get; set; }
+
+        [Display(Name = "Name")]
+        public string Full_Name
+        {
+            get
+            {
+                return First_Name + " " + Last_Name;
+            }
+        }
         public string Email { get; set; }
         public string Address { get; set; }
 
