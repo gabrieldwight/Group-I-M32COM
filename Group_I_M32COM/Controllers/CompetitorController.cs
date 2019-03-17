@@ -33,11 +33,11 @@ namespace Group_I_M32COM.Controllers
                                   where u.Id == user_id
                                   select new User_RoleModel
                                   {
-                                        Role_Name = r.Name,
-                                        Name = u.FirstName + " " + u.LastName,
-                                       Address = u.Address,
-                                        Email= u.Email,
-                                       
+                                    Role_Name = r.Name,
+                                    First_Name = u.FirstName,
+                                    Last_Name = u.LastName,
+                                    Address = u.Address,
+                                    Email= u.Email,                                       
                                   };
                                   
             return View(applicationUser.Single());
