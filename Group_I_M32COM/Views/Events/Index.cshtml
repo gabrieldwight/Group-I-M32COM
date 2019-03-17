@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Group_I_M32COM.DbTableModel.Event>
 @using Microsoft.AspNetCore.Identity
 @using Group_I_M32COM.Data
+@using static Group_I_M32COM.Helpers.Data_RolesEnum
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -21,7 +22,7 @@
                               };
         foreach (var item in applicationUser)
         {
-            if (item.Role_Name == "User")
+            if (item.Role_Name == Role_Enum.TeamLeader.ToString())
             {
                 Layout = "~/Views/Competitor/_EventLayout.cshtml";
             }
