@@ -45,5 +45,8 @@ namespace Group_I_M32COM.DbTableModel
         // Foreign key for boat categories types
         [Display(Name = "Boat Category")]
         public Boat_type Boat_Types { get; set; }
+
+        // Foreign key definition one event can have many event participants
+        public List<Event_participation> Event_Participations { get; set; }
     }
 }
