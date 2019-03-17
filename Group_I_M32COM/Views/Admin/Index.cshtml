@@ -19,20 +19,24 @@
             <a class="dropdown-item" href="#">50</a>
             <a class="dropdown-item" href="#">Show All</a>
         </div>
-        <a asp-action="CreateAdmin"><button type="button" class="btn btn-outline-secondary">Add Admin Users</button></a>
+        <a asp-action="Create"><button type="button" class="btn btn-outline-secondary">Add Admin Users</button></a>
     </div>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <div class="input-group-text" id="btnGroupAddon2">Search</div>
+    <form asp-controller="Admin" asp-action="SearchUser" method="get">
+        <div class="input-group">
+            <div class="input-group mb-3">
+                <input type="text" name="SearchString" class="form-control" placeholder="Search User" aria-label="Search User" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                </div>
+            </div>
         </div>
-        <input type="text" class="form-control" placeholder="Search" id="searchTextBoxid" onkeyup="search()" aria-label="Input group example" aria-describedby="btnGroupAddon2">
-    </div>
+    </form>
 </div>
 <table id="mainTableid" class="table table-striped">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Full_Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Email)
@@ -60,7 +64,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => item.Full_Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
@@ -93,36 +97,3 @@
         }
     </tbody>
 </table>
-
-<script>
-    function search() {
-        var input, filter, table, tr, td, i;
-        input = document.getElementById("searchTextBoxid"); //to get typed in keyword
-        filter = input.value.toUpperCase(); //to avoid case sensitive search, if case sensitive search is required then comment this line
-        table = document.getElementById("mainTableid"); //to get the html table
-        tr = table.getElementsByTagName("tr"); //to access rows in the table
-        var countvisble = 0; //to hide and show the alert label
-        // Search all table rows, hide those who don't match the search key word
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0]; //search keyword searched only in 1st column of the table, if you want to search other columns then change [0] to [1] or any required column number
-            if (td) {
-                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                    countvisble++;
-                    tr[i].style.display = "";
-                    document.getElementById("NotExist").style.display = "none";
-                }
-                else {
-                    tr[i].style.display = "none";
-                    document.getElementById("NotExist").style.display = "none";
-                }
-            }
-        }
-
-
-        if (countvisble == 0) //displays the alert message label
-        {
-            document.getElementById("NotExist").style.display = "Block";
-            document.getElementById("NotExist").innerHTML = "Does not exist!";
-        }
-    }
-</script>
