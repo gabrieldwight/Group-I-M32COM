@@ -27,7 +27,7 @@ namespace Group_I_M32COM.DbTableModel
         public List<Sub_boat_type> Sub_Boat_Types { get; set; }
 
         // Foreign key definition one boat class category can have many events
-        public List<Event> Event { get; set; }
+        public List<Event> Events { get; set; }
         // Foreign key definition one boat class category can have many boats manufacturer
         public List<Boat> Boats { get; set; }
     }
