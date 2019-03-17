@@ -287,12 +287,17 @@ namespace Group_I_M32COM.Controllers
             {
                 try
                 {
+                    applicationuser.FirstName = user_RoleModel.First_Name;
+                    applicationuser.LastName = user_RoleModel.Last_Name;
+                    applicationuser.Email = user_RoleModel.Email;
+                    applicationuser.Address = user_RoleModel.Address;
+                    
                     // To set the system time for record update
                     applicationuser.Updated_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
                     _context.Update(applicationuser);
                     _context.Entry(applicationuser).Property(x => x.Created_At).IsModified = false; // To prevent the datetime property to be set as null on update operation 
 
-                    
+                    // To update the role of the user by deleting the old role and assigning new role to the user
                     if (old_application_role.RoleId != Role_Name)
                     {
                         await _userManager.RemoveFromRoleAsync(applicationuser, old_RoleName.Name);
