@@ -1,0 +1,49 @@
+﻿@model Group_I_M32COM.DbTableModel.Event_participation
+
+@{
+    ViewData["Title"] = "RegisterEvent";
+    Layout = "~/Views/Competitor/_EventLayout.cshtml";
+}
+
+<h2>RegisterEvent</h2>
+
+<h4>Event_participation</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="RegisterEvent_Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Event" class="control-label"></label>
+                <select class="form-control" asp-for="Event">
+                    @foreach (var type in ViewBag.Events as IEnumerable<SelectListItem>)
+                    {
+                        <option value="@type.Value">@type.Text</option>
+                    }
+                </select>
+                <span asp-validation-for="Event" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="position" class="control-label"></label>
+                <input asp-for="position" class="form-control" />
+                <span asp-validation-for="position" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="points_awarded" class="control-label"></label>
+                <input asp-for="points_awarded" class="form-control" />
+                <span asp-validation-for="points_awarded" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register for Event Participation" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
