@@ -30,3 +30,14 @@ function RemoveDynamicTextBox(div) {
     --i;
     document.getElementById("subcategorydiv").removeChild(div.parentNode.parentNode);
 }
+
+// To show and hide file input
+function myNewFunction(sel) {
+    var x = document.getElementById("filediv");
+    if (sel.options[sel.selectedIndex].text == "Image" || sel.options[sel.selectedIndex].text == "Video") {
+        x.style.visibility = "visible";
+    }
+    else {
+        x.style.visibility = "hidden";
+    }
+}
