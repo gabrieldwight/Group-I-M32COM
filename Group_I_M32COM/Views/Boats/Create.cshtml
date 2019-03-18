@@ -45,7 +45,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Boat_media_type" class="control-label"></label>
-                <select class="form-control" asp-for="Boat_media_type">
+                <select class="form-control" asp-for="Boat_media_type" onChange="myNewFunction(this);">
                     @foreach (var type in ViewBag.Mediatype as IEnumerable<SelectListItem>)
                     {
                         <option value="@type.Value">@type.Text</option>
@@ -53,7 +53,7 @@
                 </select>
                 <span asp-validation-for="Boat_media_type" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div id="filediv" class="form-group" style="visibility: collapse;">
                 <label for="exampleFormControlFile1" class="control-label">Boat Media</label>
                 <input type="file" class="form-control-file" id="Selected_files" name="Selected_files" asp-for="Boat_Medias" multiple />
             </div>
