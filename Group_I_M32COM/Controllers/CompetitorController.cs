@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Group_I_M32COM.Data;
+using Group_I_M32COM.DbTableModel;
+using Group_I_M32COM.Extensions.Alerts;
 using Group_I_M32COM.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Group_I_M32COM.Controllers
 {
@@ -17,14 +21,24 @@ namespace Group_I_M32COM.Controllers
         {
             _context = context;
         }
-        // GET: Competitor
-        public ActionResult Index()
+
+        // GET: Competitor team list
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var team_data = await _context.Boat_Crews.FirstOrDefaultAsync(m => m.Id == 1);
+            ViewBag.Slots = team_data.Boat_crew_allocation;
+
+            return View("~/Views/Competitor/TeamMembers.cshtml", await _context.Members.ToListAsync());
+        }
+
+        // GET: Competitor participated in event
+        public async Task<IActionResult> EventParticipated()
+        {
+            return View("~/Views/Competitor/EventsParticipated.cshtml", await _context.Event_Participations.ToListAsync());
         }
 
         // GET: Competitor/Details/5
-        public ActionResult Details(string id)
+        public IActionResult Details(string id)
         {
             string user_id = id.ToString();
             var applicationUser = from r in _context.Roles
@@ -43,31 +57,76 @@ namespace Group_I_M32COM.Controllers
             return View(applicationUser.Single());
         }
 
-        // GET: Competitor/Create
-        public ActionResult Create()
+        // To display event registration form
+        // GET: Competitor/RegisterEvent_Create
+        public IActionResult RegisterEvent_Create()
         {
-            return View();
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    // To load the available events from the database
+                    var events_available = _context.Events
+                        .Select(e => new SelectListItem
+                        {
+                            Text = e.Event_name,
+                            Value = e.Id.ToString(),
+                        })
+                        .OrderBy(o => o.Text).ToList();
+                    events_available.Insert(0, new SelectListItem { Text = "Please select event to participate in", Value = string.Empty });
+                    ViewBag.Events = events_available;
+
+                    // Commit the transaction in the above number operations of the database context
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error: " + e);
+                    // In case of errors committed in the transaction. Changes will be rollback to the previous state
+                    dbContextTransaction.Rollback();
+                }
+            }
+            return View("~/Views/Competitor/RegisterEvent.cshtml");
         }
 
-        // POST: Competitor/Create
+        // To register a boat team to participate in an event
+        // POST: Competitor/RegisterEvent_Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> RegisterEvent_Create([Bind("Id,position,points_awarded,Created_At,Updated_At")] Event_participation event_Participation, string Event)
         {
-            try
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                // TODO: Add insert logic here
+                try
+                {
+                    /* To return the selected event name from the database if it exists*/
+                    var get_event = _context.Events.SingleOrDefault(x => x.Id == Convert.ToInt32(Event));
+                    event_Participation.Event = get_event;
 
-                return RedirectToAction(nameof(Index));
+                    // Commit the transaction in the above number operations of the database context
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error: " + e);
+                    // In case of errors committed in the transaction. Changes will be rollback to the previous state
+                    dbContextTransaction.Rollback();
+                }
             }
-            catch
+
+            if (ModelState.IsValid)
             {
-                return View();
+                // To pass the creation date on system time
+                event_Participation.Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
+                _context.Add(event_Participation);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(EventParticipated)).WithSuccess("Success", "Successfully Registered to participate in the event");
             }
+            return View(event_Participation);
         }
 
         // GET: Competitor/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             return View();
         }
@@ -75,7 +134,7 @@ namespace Group_I_M32COM.Controllers
         // POST: Competitor/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit(int id, IFormCollection collection)
         {
             try
             {
@@ -90,7 +149,7 @@ namespace Group_I_M32COM.Controllers
         }
 
         // GET: Competitor/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             return View();
         }
@@ -98,7 +157,7 @@ namespace Group_I_M32COM.Controllers
         // POST: Competitor/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public IActionResult Delete(int id, IFormCollection collection)
         {
             try
             {
