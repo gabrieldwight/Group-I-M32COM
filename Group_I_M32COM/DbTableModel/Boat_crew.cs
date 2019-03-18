@@ -23,12 +23,13 @@ namespace Group_I_M32COM.DbTableModel
         [Display(Name = "Boat Team Address")]
         public string Boat_crew_address { get; set; }
 
-
+        [Display(Name = "Boat Team Phone Number")]
         public string Boat_crew_phone { get; set; }
+
+        [Display(Name = "Boat Team Logo")]
         public string Boat_crew_logo { get; set; }
 
         [Required(ErrorMessage = "Please enter boat team allocation available")]
-        [StringLength(50, ErrorMessage = "The minimum {2} and Maximum {1} characters are allowed", MinimumLength = 3)]
         [Display(Name = "Boat Team Space Available")]
         public int Boat_crew_allocation { get; set; }
 
