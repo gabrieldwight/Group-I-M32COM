@@ -68,7 +68,7 @@ namespace Group_I_M32COM.Controllers
                     boat_type.Insert(0, new SelectListItem { Text = "Select Boat Type", Value = string.Empty });
                     ViewBag.Boat_type = boat_type;
 
-                    /* To retrieve the boats available in the Event_Types table and display the available records 
+                    /* To retrieve the events available in the Event_Types table and display the available records 
                        in the dropdown list*/
                     var event_type = _context.Event_Types
                         .Select(e => new SelectListItem { Text = e.Event_type_name, Value = e.Id.ToString() })

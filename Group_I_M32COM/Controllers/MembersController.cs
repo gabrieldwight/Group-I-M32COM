@@ -21,10 +21,15 @@ namespace Group_I_M32COM.Controllers
         }
 
         // GET: Members
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string id)
         {
-            var team_data = await _context.Boat_Crews.FirstOrDefaultAsync(m => m.Id == 1);
-            ViewBag.Slots = team_data.Boat_crew_allocation;
+            //var team_data = await _context.Boat_Crews.FirstOrDefaultAsync(m => m.Id == id);
+            var team_data = await _context.Boat_crew_leader
+                .Include(bc => bc.boat_Crew)
+                .FirstOrDefaultAsync(m => m.User_Id == id);
+            ViewBag.Slots = team_data.boat_Crew.Boat_crew_allocation;
+
+            TempData["User_Id"] = team_data.User_Id;
 
             return View(await _context.Members.ToListAsync());
         }
@@ -50,6 +55,9 @@ namespace Group_I_M32COM.Controllers
         // GET: Members/Create
         public IActionResult Create()
         {
+            // To access temp data and store it for persistent access with the keep method
+            TempData["User_Id"].ToString();
+            TempData.Keep("User_Id");
             return View();
         }
 
@@ -65,8 +73,11 @@ namespace Group_I_M32COM.Controllers
                 try
                 {
                     /* To return the allocate the team member to the available space from the database if it exists*/
-                    var team_data = await _context.Boat_Crews.FirstOrDefaultAsync(m => m.Id == 1);
-                    team_data.Boat_crew_allocation -= 1;
+                    //var team_data = await _context.Boat_Crews.FirstOrDefaultAsync(m => m.Id == 1);
+                    var team_data = await _context.Boat_crew_leader
+                            .Include(bc => bc.boat_Crew)
+                            .FirstOrDefaultAsync(m => m.User_Id == (string)TempData["User_Id"]);
+                    team_data.boat_Crew.Boat_crew_allocation -= 1;
                     team_data.Updated_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
                     _context.Update(team_data);
                     _context.Entry(team_data).Property(x => x.Created_At).IsModified = false; // To prevent the datetime property to be set as null on update operation 
@@ -85,9 +96,11 @@ namespace Group_I_M32COM.Controllers
 
             if (ModelState.IsValid)
             {
+                members.Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
                 _context.Add(members);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index)).WithSuccess("Success", "Successfully Registered member to the team");
+                string userId = TempData["User_Id"].ToString();
+                return RedirectToAction(nameof(Index), new { Id = userId} ).WithSuccess("Success", "Successfully Registered member to the team");
             }
             return View(members);
         }
@@ -105,6 +118,11 @@ namespace Group_I_M32COM.Controllers
             {
                 return NotFound();
             }
+
+            // To access temp data and store it for persistent access with the keep method
+            TempData["User_Id"].ToString();
+            TempData.Keep("User_Id");
+
             return View(members);
         }
 
@@ -124,7 +142,10 @@ namespace Group_I_M32COM.Controllers
             {
                 try
                 {
+                    // To set the system time for record update
+                    members.Updated_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
                     _context.Update(members);
+                    _context.Entry(members).Property(x => x.Created_At).IsModified = false; // To prevent the datetime property to be set as null on update operation 
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -138,7 +159,8 @@ namespace Group_I_M32COM.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                string userId = TempData["User_Id"].ToString();
+                return RedirectToAction(nameof(Index), new { id = userId }).WithSuccess("Success", "Successfully Updated team member details");
             }
             return View(members);
         }
@@ -158,6 +180,10 @@ namespace Group_I_M32COM.Controllers
                 return NotFound();
             }
 
+            // To access temp data and store it for persistent access with the keep method
+            TempData["User_Id"].ToString();
+            TempData.Keep("User_Id");
+
             return View(members);
         }
 
@@ -168,8 +194,20 @@ namespace Group_I_M32COM.Controllers
         {
             var members = await _context.Members.FindAsync(id);
             _context.Members.Remove(members);
+
+            var team_data = await _context.Boat_crew_leader
+                            .Include(bc => bc.boat_Crew)
+                            .FirstOrDefaultAsync(m => m.User_Id == (string)TempData["User_Id"]);
+            team_data.boat_Crew.Boat_crew_allocation += 1;
+            team_data.Updated_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
+            _context.Update(team_data);
+            _context.Entry(team_data).Property(x => x.Created_At).IsModified = false; // To prevent the datetime property to be set as null on update operation */
+
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            // to access the temporary data stored in tempdata variable 
+            string userId = TempData["User_Id"].ToString();
+            return RedirectToAction(nameof(Index), new { id = userId }).WithSuccess("Success", "Successfully Deleted member from the team");
         }
 
         private bool MembersExists(int id)
