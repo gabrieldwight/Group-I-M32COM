@@ -6,6 +6,7 @@ using Group_I_M32COM.Data;
 using Group_I_M32COM.DbTableModel;
 using Group_I_M32COM.Extensions.Alerts;
 using Group_I_M32COM.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,6 +14,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Group_I_M32COM.Controllers
 {
+    /* We use the Authroize Data Annotation to assign the role based authorization in EventsController access level
+       The authorize data annotation will check if the user is logged and retrieves the user role
+       If the user is not logged in it will redirect the user to the login page */
+    [Authorize(Roles = "TeamLeader")]
     public class CompetitorController : Controller
     {
         private readonly ApplicationDbContext _context;
