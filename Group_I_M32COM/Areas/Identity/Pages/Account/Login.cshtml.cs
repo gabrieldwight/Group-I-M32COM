@@ -120,7 +120,7 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
                             {
                                 user.Login_Status = true;
                                 await _signInManager.UserManager.UpdateAsync(user);
-                                return RedirectToAction("Index", "Members");
+                                return RedirectToAction("Index", "Members", new { user.Id });
                             }
                         }
                     }
