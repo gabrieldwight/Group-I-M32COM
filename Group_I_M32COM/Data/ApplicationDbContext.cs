@@ -28,5 +28,6 @@ namespace Group_I_M32COM.Data
         public DbSet<Event_type> Event_Types { get; set; }
         public DbSet<Members> Members { get; set; }
         public DbSet<Sub_boat_type> Sub_Boat_Types { get; set; }
+        public DbSet<Boat_crew_leader> Boat_crew_leader { get; set; }
     }
 }
