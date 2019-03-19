@@ -39,7 +39,9 @@ namespace Group_I_M32COM.Controllers
         // GET: Competitor participated in event
         public async Task<IActionResult> EventParticipated()
         {
-            return View("~/Views/Competitor/EventsParticipated.cshtml", await _context.Event_Participations.ToListAsync());
+            var event_data = _context.Event_Participations
+                .Include(e => e.Event);
+            return View("~/Views/Competitor/EventsParticipated.cshtml", await event_data.ToListAsync());
         }
 
         // GET: Competitor/Details/5
@@ -107,6 +109,12 @@ namespace Group_I_M32COM.Controllers
                     /* To return the selected event name from the database if it exists*/
                     var get_event = _context.Events.SingleOrDefault(x => x.Id == Convert.ToInt32(Event));
                     event_Participation.Event = get_event;
+
+                    var team_data = await _context.Boat_crew_leader
+                        .Include(bc => bc.boat_Crew)
+                        .FirstOrDefaultAsync(m => m.User_Id == TempData["User_Id"].ToString());
+
+                    event_Participation.boat_Crew = team_data.boat_Crew;
 
                     // Commit the transaction in the above number operations of the database context
                     dbContextTransaction.Commit();
