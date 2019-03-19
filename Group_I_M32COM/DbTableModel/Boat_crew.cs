@@ -45,5 +45,8 @@ namespace Group_I_M32COM.DbTableModel
 
         // Foreign key definition one boat team can participate in many event participants
         public List<Event_participation> Event_Participations { get; set; }
+
+        // Foreign key definition one boat team can have many boat team leaders
+        public List<Boat_crew_leader> boat_Crew_Leaders { get; set; }
     }
 }
