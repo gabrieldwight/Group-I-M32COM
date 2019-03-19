@@ -10,15 +10,6 @@
 
 <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
     <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-        <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Show 10 rows
-        </button>
-        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-            <a class="dropdown-item" href="#">10</a>
-            <a class="dropdown-item" href="#">25</a>
-            <a class="dropdown-item" href="#">50</a>
-            <a class="dropdown-item" href="#">Show All</a>
-        </div>
         <a asp-action="Create"><button type="button" class="btn btn-outline-secondary">Add Admin Users</button></a>
     </div>
     <form asp-controller="Admin" asp-action="SearchUser" method="get">
