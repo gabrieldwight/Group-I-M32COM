@@ -45,6 +45,24 @@
     {
       "library": "font-awesome@5.7.2",
       "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "fullcalendar@3.10.0",
+      "destination": "wwwroot/lib/fullcalendar/",
+      "files": [
+        "fullcalendar.min.js",
+        "fullcalendar.css",
+        "fullcalendar.print.css"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "moment.js@2.24.0",
+      "destination": "wwwroot/lib/moment.js/",
+      "files": [
+        "moment.min.js"
+      ]
     }
   ]
 }
