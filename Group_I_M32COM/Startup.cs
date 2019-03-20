@@ -53,7 +53,11 @@ namespace Group_I_M32COM
             services.AddTransient<Helpers.ICountryDataService, Helpers.CountryData>();
             services.AddTransient<Helpers.IGenderDataService, Helpers.GenderData>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            // To use the services to configure the web application API 
+            services.AddMvc()
+                .AddJsonOptions(jsonformat => jsonformat.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented)
+                .AddJsonOptions(jsonformat => jsonformat.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
