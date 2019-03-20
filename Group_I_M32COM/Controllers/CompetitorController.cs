@@ -72,8 +72,13 @@ namespace Group_I_M32COM.Controllers
             {
                 try
                 {
-                    // To load the available events from the database
+                    /* To load the available events from the database and to check for the events that 
+                     are not registered by the boat team */
+                    var get_events_registered = _context.Event_Participations.ToList();
+
                     var events_available = _context.Events
+                        .Include(ep => ep.Event_Participations)
+                        .Where(x => get_events_registered.Any(y => y.Event.Id != x.Id))
                         .Select(e => new SelectListItem
                         {
                             Text = e.Event_name,
