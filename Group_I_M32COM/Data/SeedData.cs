@@ -150,7 +150,7 @@ namespace Group_I_M32COM.Data
                     PostalCode="CV1 5QQ",
                     Country="Cyprus",
                     PhoneNumber="0123456789",
-                    Created_At=DateTime.Parse(DateTime.Now.ToString("yyyy-MM--dd HH:mm:ss").Trim())
+                    Created_At=DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
                 },
 
                 //Sixth User
@@ -165,7 +165,7 @@ namespace Group_I_M32COM.Data
                     PostalCode="LN1 5QQ",
                     Country="Greece",
                     PhoneNumber="0456721398",
-                    Created_At=DateTime.Parse(DateTime.Now.ToString("yyyy-MM--dd HH:mm:ss").Trim())
+                    Created_At=DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
                 },
 
                 //Seventh User
@@ -180,7 +180,7 @@ namespace Group_I_M32COM.Data
                     PostalCode="RG4 5QQ",
                     Country="United Kingdom",
                     PhoneNumber="0987654321",
-                    Created_At=DateTime.Parse(DateTime.Now.ToString("yyyy-MM--dd HH:mm:ss").Trim())
+                    Created_At=DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
                 },
 
                 //Eigth User
@@ -195,7 +195,7 @@ namespace Group_I_M32COM.Data
                     PostalCode="LV1 5QQ",
                     Country="Germany",
                     PhoneNumber="0144568919",
-                    Created_At=DateTime.Parse(DateTime.Now.ToString("yyyy-MM--dd HH:mm:ss").Trim())
+                    Created_At=DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
                 }
             };
 
