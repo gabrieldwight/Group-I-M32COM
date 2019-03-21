@@ -1,4 +1,4 @@
-﻿@model Group_I_M32COM.DbTableModel.Boat_crew_leader
+﻿@model Group_I_M32COM.Models.Boat_CrewLeaderViewModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -13,10 +13,16 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.User_Id)
+            @Html.DisplayNameFor(model => model.Full_Name)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.User_Id)
+            @Html.DisplayFor(model => model.Full_Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TeamName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TeamName)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Created_At)
@@ -34,7 +40,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

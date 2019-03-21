@@ -1,11 +1,11 @@
-﻿@model IEnumerable<Group_I_M32COM.DbTableModel.Boat_crew_leader>
+﻿@model IEnumerable<Group_I_M32COM.Models.Boat_CrewLeaderViewModel>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Admin/_AdminLayout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>List of Team Leaders</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -14,7 +14,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.User_Id)
+                @Html.DisplayNameFor(model => model.Full_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TeamName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Created_At)
@@ -29,7 +32,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.User_Id)
+                @Html.DisplayFor(modelItem => item.Full_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TeamName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Created_At)
