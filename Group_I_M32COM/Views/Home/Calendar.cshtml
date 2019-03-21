@@ -38,17 +38,18 @@
             $.ajax({
                 type: "GET",
                 url: '/api/eventsapi',
+                dataType: 'json',
                 success: function (data) {
-                    $.each(data, function (v) {
+                    console.log(data);
+                    $.each(data, function (i, v) {
                         Events.push({
-                            title: v.Event_name,
-                            description: v.Event_description,
-                            start: moment(v.Event_Start_date),
-                            end: v.Event_End_date != null ? moment(v.Event_End_date) : null,
-                            allDay: v.IsFullDay
-                            
-                            
+                            title: v.event_name,
+                            description: v.event_description,
+                            start: moment(v.event_Start_date),
+                            end: v.event_End_date != null ? moment(v.event_End_date) : null,
+                            color: v.event_Types.event_type_name == "Promotional event" ? "blue" : "green",                         
                         });
+                        console.log(i + " : " + v);
                     })
 
                     GenerateCalender(Events);
@@ -76,13 +77,13 @@
                     eventClick: function (calEvent, jsEvent, view) {
                         $('#myModal #eventTitle').text(calEvent.title);
                         var $description = $('<div/>');
-                        $description.append($('<p/>').html('<b>Start:</b>' + calEvent.start.format("DD-MMM-YYYY HH:mm a")));
+                        $description.append($('<p/>').html('<b>Start:</b> ' + calEvent.start.format("DD-MMM-YYYY HH:mm a")));
                         if (calEvent.end != null)
                         {
-                            $description.append($('<p/>').html('<b>End:</b>' + calEvent.end.format("DD-MMM-YYYY HH:mm a")));
+                            $description.append($('<p/>').html('<b>End:</b> ' + calEvent.end.format("DD-MMM-YYYY HH:mm a")));
                         }
 
-                        $description.append($('<p/>').html('<b>Description:</b>' + calEvent.description));
+                        $description.append($('<p/>').html('<b>Description:</b> ' + calEvent.description));
                         $('#myModal #pDetails').empty().html($description);
 
                         $('#myModal').modal();
