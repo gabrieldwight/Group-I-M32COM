@@ -31,7 +31,18 @@ namespace Group_I_M32COM.Controllers
 
             TempData["User_Id"] = team_data.User_Id;
 
-            return View(await _context.Members.ToListAsync());
+            // To check if the user has a team role
+
+            if(team_data.User_Id != null)
+            {
+                return View(await _context.Members.ToListAsync());
+            }
+
+            else
+            {
+                return NotFound();
+            }
+            
         }
 
         // GET: Members/Details/5
