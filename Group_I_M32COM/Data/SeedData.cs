@@ -79,116 +79,7 @@ namespace Group_I_M32COM.Data
                 }
             }
 
-            // To check if the user exists in the database
-            /*if (await userManager.FindByNameAsync("rtesting@test.com") == null)
-            {
-                var user = new ApplicationUser
-                {
-                    UserName = "rtesting@test.com",
-                    Email = "rtesting@test.com",
-                    FirstName = "Adam",
-                    LastName = "Aldridge",
-                    Address = "Fake St",
-                    City = "Vancouver",
-                    PostalCode = "VSU K8I",
-                    Country = "Canada",
-                    PhoneNumber = "6902341234",
-                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
-                };
-
-                // create the user through the user manager
-                var result = await userManager.CreateAsync(user);
-                // If the user is successfully created. We assign the user a password and a role through the user manager object.
-                if (result.Succeeded)
-                {
-                    await userManager.AddPasswordAsync(user, password);
-                    await userManager.AddToRoleAsync(user, role1);
-                }
-                adminId1 = user.Id;
-            }
-
-            // To check if the second user exists in the database
-            if (await userManager.FindByNameAsync("btesting@test.com") == null)
-            {
-                var user = new ApplicationUser
-                {
-                    UserName = "btesting@test.com",
-                    Email = "btesting@test.com",
-                    FirstName = "Bob",
-                    LastName = "Parker",
-                    Address = "Vermount St",
-                    City = "Surrey",
-                    PostalCode = "VSU K8I",
-                    Country = "Canada",
-                    PhoneNumber = "6702341234",
-                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
-                };
-
-                // create the user through the user manager
-                var result = await userManager.CreateAsync(user);
-                // If the user is successfully created. We assign the user a password and a role through the user manager object.
-                if (result.Succeeded)
-                {
-                    await userManager.AddPasswordAsync(user, password);
-                    await userManager.AddToRoleAsync(user, role1);
-                }
-                adminId1 = user.Id;
-            }
-
-            // to check for the third user
-            if (await userManager.FindByNameAsync("ctesting@test.com") == null)
-            {
-                var user = new ApplicationUser
-                {
-                    UserName = "ctesting@test.com",
-                    Email = "ctesting@test.com",
-                    FirstName = "Smith",
-                    LastName = "Aldridge",
-                    Address = "Yew St",
-                    City = "Vancouver",
-                    PostalCode = "VSU K8I",
-                    Country = "Canada",
-                    PhoneNumber = "6905341234",
-                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
-                };
-
-                // create the user through the user manager
-                var result = await userManager.CreateAsync(user);
-                // If the user is successfully created. We assign the user a password and a role through the user manager object.
-                if (result.Succeeded)
-                {
-                    await userManager.AddPasswordAsync(user, password);
-                    await userManager.AddToRoleAsync(user, role2);
-                }
-            }
-
-            // to check for the fourth user
-            if (await userManager.FindByNameAsync("dtesting@test.com") == null)
-            {
-                var user = new ApplicationUser
-                {
-                    UserName = "dtesting@test.com",
-                    Email = "dtesting@test.com",
-                    FirstName = "Chris",
-                    LastName = "Aldridge",
-                    Address = "Fake St",
-                    City = "Vancouver",
-                    PostalCode = "VSU K8I",
-                    Country = "Canada",
-                    PhoneNumber = "6901521234",
-                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
-                };
-
-                // create the user through the user manager
-                var result = await userManager.CreateAsync(user);
-                // If the user is successfully created. We assign the user a password and a role through the user manager object.
-                if (result.Succeeded)
-                {
-                    await userManager.AddPasswordAsync(user, password);
-                    await userManager.AddToRoleAsync(user, role2);
-                }
-            }*/
-
+           
             List<ApplicationUser> applicationUsers = new List<ApplicationUser>()
             {
                 // First User
@@ -246,8 +137,68 @@ namespace Group_I_M32COM.Data
                     Country = "Canada",
                     PhoneNumber = "6901521234",
                     Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                },
+                //Fifth User
+                new ApplicationUser
+                {
+                    UserName="Michalis",
+                    Email="michalis@testing.com",
+                    FirstName="Michalis",
+                    LastName="Sofroni",
+                    Address="Coventry Street",
+                    City="Coventry",
+                    PostalCode="CV1 5QQ",
+                    Country="Cyprus",
+                    PhoneNumber="0123456789",
+                    Created_At=DateTime.Parse(DateTime.Now.ToString("yyyy-MM--dd HH:mm:ss").Trim())
+                },
+
+                //Sixth User
+                new ApplicationUser
+                {
+                    UserName="Ted",
+                    Email="ted@testing.com",
+                    FirstName="Ted",
+                    LastName="Teddie",
+                    Address="London Street",
+                    City="London",
+                    PostalCode="LN1 5QQ",
+                    Country="Greece",
+                    PhoneNumber="0456721398",
+                    Created_At=DateTime.Parse(DateTime.Now.ToString("yyyy-MM--dd HH:mm:ss").Trim())
+                },
+
+                //Seventh User
+                new ApplicationUser
+                {
+                    UserName="Nate",
+                    Email="nate@testing.com",
+                    FirstName="Nate",
+                    LastName="Nate",
+                    Address="Reading Street",
+                    City="Reading",
+                    PostalCode="RG4 5QQ",
+                    Country="United Kingdom",
+                    PhoneNumber="0987654321",
+                    Created_At=DateTime.Parse(DateTime.Now.ToString("yyyy-MM--dd HH:mm:ss").Trim())
+                },
+
+                //Eigth User
+                new ApplicationUser
+                {
+                    UserName="Natasha",
+                    Email="natasha@testing.com",
+                    FirstName="Natasha",
+                    LastName="Natasha",
+                    Address="Liverpool Street",
+                    City="Liverpool",
+                    PostalCode="LV1 5QQ",
+                    Country="Germany",
+                    PhoneNumber="0144568919",
+                    Created_At=DateTime.Parse(DateTime.Now.ToString("yyyy-MM--dd HH:mm:ss").Trim())
                 }
             };
+
 
             // Await method to create all the applicationUsers from the list
             foreach (var u in applicationUsers)
@@ -270,6 +221,35 @@ namespace Group_I_M32COM.Data
                     }
                 }
             }
+
+            //Creating a list sample of data for the event timetable
+            List<Event_type> event_Types = new List<Event_type>()
+            {
+                //Fast events type
+                new Event_type
+                {
+                    Event_type_name = "Charity Ball",
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                },
+                new Event_type
+                {
+                    Event_type_name="Thames round",
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                },
+
+                new Event_type
+                {
+                    Event_type_name="Faster round",
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                },
+
+                new Event_type
+                {
+                    Event_type_name="Maximum speed round",
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                }
+
+            };
 
             // Creating a list sample data to the respective table
             List<Boat_media_type> boat_Media_Types = new List<Boat_media_type>()
@@ -294,6 +274,39 @@ namespace Group_I_M32COM.Data
                 }
             };
 
+            /*//Creating sample about events table
+            List<Event> events_ = new List<Event>()
+            {
+                // First event
+                new Event
+                {
+                    Event_name = "Faster race",
+                    Event_description="The faster boat is the winning.",
+                    Event_Start_date="2019-07-20 15:00:00",
+                    Event_End_date="2019-07-20 12:00:00",
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                },
+                // Second event
+                new Event
+                {
+                    Event_name = "Thames race",
+                    Event_description="Enjoy a 4 day's race in Thames.",
+                    Event_Start_date="2019-08-23 08:30:00",
+                    Event_End_date="2019-08-27 08:30:00",
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                },
+                // Third event
+                new Event
+                {
+                    Event_name = "Charity Ball",
+                    Event_description="An hour race where th rewards of the winnings are donated to charity",
+                    Event_Start_date="2019-14-05 20:00:00",
+                    Event_End_date="2019-14-05 21:00:00",
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                }
+            };*/
+
+
             // Seeding the created multiple list data into multiple tables
             using (var dbContextTransaction = context.Database.BeginTransaction())
             {
@@ -307,8 +320,19 @@ namespace Group_I_M32COM.Data
                         {
                             context.Add(bm);
                         }
-                    }                
+                    }
+
+                    //Seeding the event type sample data 
+                    foreach (var event_type in event_Types)
+                    {
+                        //To check if the event type exists on runtime to avoid duplicate entry in the database
+                        if (context.Event_Types.SingleOrDefault(e => e.Event_type_name == event_type.Event_type_name) == null)
+                        {
+                            context.Add(event_type);
+                        }
+                    }
                     context.SaveChanges();
+                        
 
                     // Commit the transaction in the above number operations of the database context
                     dbContextTransaction.Commit();
