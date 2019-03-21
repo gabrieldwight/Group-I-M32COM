@@ -48,6 +48,11 @@ namespace Group_I_M32COM.Controllers
             return View(await _context.Events.ToListAsync());
         }
 
+        public IActionResult Calendar()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
