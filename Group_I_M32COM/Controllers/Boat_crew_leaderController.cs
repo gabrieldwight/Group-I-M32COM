@@ -9,6 +9,7 @@ using Group_I_M32COM.Data;
 using Group_I_M32COM.DbTableModel;
 using static Group_I_M32COM.Helpers.Data_RolesEnum;
 using Microsoft.AspNetCore.Authorization;
+using Group_I_M32COM.Models;
 
 namespace Group_I_M32COM.Controllers
 {
@@ -28,7 +29,21 @@ namespace Group_I_M32COM.Controllers
         // GET: Boat_crew_leader
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Boat_crew_leader.ToListAsync());
+            // To get the name of the user assigned to the boat team related with the user id
+            var applicationUser = from bc in _context.Boat_crew_leader
+                                  join u in _context.Users on bc.User_Id equals u.Id
+                                  select new Boat_CrewLeaderViewModel
+                                  {
+                                      Id = bc.Id,
+                                      FirstName = u.FirstName,
+                                      LastName = u.LastName,
+                                      TeamName = bc.boat_Crew.Boat_crew_name,
+                                      Created_At = bc.Created_At,
+                                      Updated_At = bc.Updated_At
+                                  };
+
+
+            return View(await applicationUser.ToListAsync());
         }
 
         // GET: Boat_crew_leader/Details/5
@@ -39,14 +54,29 @@ namespace Group_I_M32COM.Controllers
                 return NotFound();
             }
 
-            var boat_crew_leader = await _context.Boat_crew_leader
-                .FirstOrDefaultAsync(m => m.Id == id);
+            /*var boat_crew_leader = await _context.Boat_crew_leader
+                .FirstOrDefaultAsync(m => m.Id == id);*/
+
+            // To get the name of the user assigned to the boat team related with the user id
+            var boat_crew_leader = from bc in _context.Boat_crew_leader
+                                  join u in _context.Users on bc.User_Id equals u.Id
+                                  where bc.Id == id
+                                  select new Boat_CrewLeaderViewModel
+                                  {
+                                      Id = bc.Id,
+                                      FirstName = u.FirstName,
+                                      LastName = u.LastName,
+                                      TeamName = bc.boat_Crew.Boat_crew_name,
+                                      Created_At = bc.Created_At,
+                                      Updated_At = bc.Updated_At
+                                  };
+
             if (boat_crew_leader == null)
             {
                 return NotFound();
             }
 
-            return View(boat_crew_leader);
+            return View(await boat_crew_leader.SingleAsync());
         }
 
         // GET: Boat_crew_leader/Create
@@ -58,11 +88,13 @@ namespace Group_I_M32COM.Controllers
                 {
                     /* To retrieve the users available in the User table and display the available records 
                        in the dropdown list*/
+                    var get_boat_team_registered = _context.Boat_crew_leader.ToList();
+
 
                     var applicationUser = from r in _context.Roles
                                           join ru in _context.UserRoles on r.Id equals ru.RoleId
                                           join u in _context.Users on ru.UserId equals u.Id
-                                          where r.Name == Role_Enum.TeamLeader.ToString()
+                                          where r.Name == Role_Enum.TeamLeader.ToString() && get_boat_team_registered.Any(x => x.User_Id != u.Id)
                                           select new SelectListItem
                                           {
                                               Text = u.FirstName + " " + u.LastName,
@@ -76,6 +108,7 @@ namespace Group_I_M32COM.Controllers
                     /* To retrieve the boats crew available in the boat crew table and display the available records 
                        in the dropdown list*/
                     var boat_crew = _context.Boat_Crews
+                        .Where(x => get_boat_team_registered.Any(y => y.boat_Crew.Id != x.Id))
                         .Select(e => new SelectListItem { Text = e.Boat_crew_name, Value = e.Id.ToString() })
                         .ToList();
                     boat_crew.Insert(0, new SelectListItem { Text = "Select Boat Crew", Value = string.Empty });
@@ -233,14 +266,29 @@ namespace Group_I_M32COM.Controllers
                 return NotFound();
             }
 
-            var boat_crew_leader = await _context.Boat_crew_leader
-                .FirstOrDefaultAsync(m => m.Id == id);
+            /*var boat_crew_leader = await _context.Boat_crew_leader
+                .FirstOrDefaultAsync(m => m.Id == id);*/
+
+            // To get the name of the user assigned to the boat team related with the user id
+            var boat_crew_leader = from bc in _context.Boat_crew_leader
+                                   join u in _context.Users on bc.User_Id equals u.Id
+                                   where bc.Id == id
+                                   select new Boat_CrewLeaderViewModel
+                                   {
+                                       Id = bc.Id,
+                                       FirstName = u.FirstName,
+                                       LastName = u.LastName,
+                                       TeamName = bc.boat_Crew.Boat_crew_name,
+                                       Created_At = bc.Created_At,
+                                       Updated_At = bc.Updated_At
+                                   };
+
             if (boat_crew_leader == null)
             {
                 return NotFound();
             }
 
-            return View(boat_crew_leader);
+            return View(await boat_crew_leader.SingleAsync());
         }
 
         // POST: Boat_crew_leader/Delete/5
