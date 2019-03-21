@@ -124,7 +124,7 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
                             }
                         }
                     }
-                    //return LocalRedirect(returnUrl);
+                    return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {
