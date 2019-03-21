@@ -88,31 +88,65 @@ namespace Group_I_M32COM.Controllers
                 {
                     /* To retrieve the users available in the User table and display the available records 
                        in the dropdown list*/
+
+                    var get_boat_crew = _context.Boat_Crews.ToList();
+
+                    // To get the list of boat crew leaders registered
                     var get_boat_team_registered = _context.Boat_crew_leader.ToList();
 
+                    // To get the users that have been registered to the boat team
+                    if (get_boat_crew.Count() != 0 && get_boat_team_registered.Count() != 0)
+                    {
+                        var applicationUser = from r in _context.Roles
+                                              join ru in _context.UserRoles on r.Id equals ru.RoleId
+                                              join u in _context.Users on ru.UserId equals u.Id
+                                              where r.Name == Role_Enum.TeamLeader.ToString() && get_boat_team_registered.Any(x => x.User_Id != u.Id)
+                                              select new SelectListItem
+                                              {
+                                                  Text = u.FirstName + " " + u.LastName,
+                                                  Value = u.Id.ToString()
+                                              };
 
-                    var applicationUser = from r in _context.Roles
-                                          join ru in _context.UserRoles on r.Id equals ru.RoleId
-                                          join u in _context.Users on ru.UserId equals u.Id
-                                          where r.Name == Role_Enum.TeamLeader.ToString() && get_boat_team_registered.Any(x => x.User_Id != u.Id)
-                                          select new SelectListItem
-                                          {
-                                              Text = u.FirstName + " " + u.LastName,
-                                              Value = u.Id.ToString()
-                                          };
+                        var user = applicationUser.ToList();
+                        user.Insert(0, new SelectListItem { Text = "Select User", Value = string.Empty });
+                        ViewBag.User = user;
 
-                    var user = applicationUser.ToList();
-                    user.Insert(0, new SelectListItem { Text = "Select User", Value = string.Empty });
-                    ViewBag.User = user;
+                        /* To retrieve the boats crew available in the boat crew table and display the available records 
+                           in the dropdown list*/
+                        var boat_crew = _context.Boat_Crews
+                            .Where(x => get_boat_team_registered.Any(y => y.boat_Crew.Id != x.Id))
+                            .Select(e => new SelectListItem { Text = e.Boat_crew_name, Value = e.Id.ToString() })
+                            .ToList();
+                        boat_crew.Insert(0, new SelectListItem { Text = "Select Boat Crew", Value = string.Empty });
+                        ViewBag.BoatCrew = boat_crew;
+                    }
 
-                    /* To retrieve the boats crew available in the boat crew table and display the available records 
-                       in the dropdown list*/
-                    var boat_crew = _context.Boat_Crews
-                        .Where(x => get_boat_team_registered.Any(y => y.boat_Crew.Id != x.Id))
-                        .Select(e => new SelectListItem { Text = e.Boat_crew_name, Value = e.Id.ToString() })
-                        .ToList();
-                    boat_crew.Insert(0, new SelectListItem { Text = "Select Boat Crew", Value = string.Empty });
-                    ViewBag.BoatCrew = boat_crew;
+                    // To get the users who do not belong to a boat team and not registered
+                    else
+                    {
+                        var applicationUser = from r in _context.Roles
+                                              join ru in _context.UserRoles on r.Id equals ru.RoleId
+                                              join u in _context.Users on ru.UserId equals u.Id
+                                              where r.Name == Role_Enum.TeamLeader.ToString()
+                                              select new SelectListItem
+                                              {
+                                                  Text = u.FirstName + " " + u.LastName,
+                                                  Value = u.Id.ToString()
+                                              };
+
+                        var user = applicationUser.ToList();
+                        user.Insert(0, new SelectListItem { Text = "Select User", Value = string.Empty });
+                        ViewBag.User = user;
+
+                        /* To retrieve the boats crew available in the boat crew table and display the available records 
+                           in the dropdown list*/
+                        var boat_crew = _context.Boat_Crews
+                            .Select(e => new SelectListItem { Text = e.Boat_crew_name, Value = e.Id.ToString() })
+                            .ToList();
+                        boat_crew.Insert(0, new SelectListItem { Text = "Select Boat Crew", Value = string.Empty });
+                        ViewBag.BoatCrew = boat_crew;
+                    }
+                   
 
                     // Commit the transaction in the above number operations of the database context
                     dbContextTransaction.Commit();
