@@ -74,7 +74,12 @@ namespace Group_I_M32COM.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                data = data.Where(s => s.First_Name.Contains(searchString) || s.Last_Name.Contains(searchString));
+                data = data.Where(
+                    s =>
+                    s.First_Name.Contains(searchString) ||
+                    s.Last_Name.Contains(searchString) ||
+                    searchString.Contains(s.First_Name + " " + s.Last_Name)
+                );
             }
             else
             {
