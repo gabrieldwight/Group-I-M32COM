@@ -23,12 +23,12 @@ namespace Group_I_M32COM.DbTableModel
         public string Event_description { get; set; }
 
         [Required(ErrorMessage = "Please select the event start date")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         [Display(Name = "Event Start Date")]
         public DateTime? Event_Start_date { get; set; }
 
         [Required(ErrorMessage = "Please select the event end date")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         [Display(Name = "Event End Date")]
         public DateTime? Event_End_date { get; set; }
 
