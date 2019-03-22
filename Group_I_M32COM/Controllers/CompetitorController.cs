@@ -78,7 +78,7 @@ namespace Group_I_M32COM.Controllers
 
                     var events_available = _context.Events
                         .Include(ep => ep.Event_Participations)
-                        .Where(x => get_events_registered.Any(y => y.Event.Id != x.Id))
+                        .Where(x => !get_events_registered.Any(y => y.Event.Id == x.Id))
                         .Select(e => new SelectListItem
                         {
                             Text = e.Event_name,
