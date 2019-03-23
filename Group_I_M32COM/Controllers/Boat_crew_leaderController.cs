@@ -10,6 +10,7 @@ using Group_I_M32COM.DbTableModel;
 using static Group_I_M32COM.Helpers.Data_RolesEnum;
 using Microsoft.AspNetCore.Authorization;
 using Group_I_M32COM.Models;
+using Group_I_M32COM.Extensions.Alerts;
 
 namespace Group_I_M32COM.Controllers
 {
@@ -178,7 +179,7 @@ namespace Group_I_M32COM.Controllers
                 boat_crew_leader.Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
                 _context.Add(boat_crew_leader);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index)).WithSuccess("Success", "Successfully Inserted Boat Team Leader Details");
             }
             return View(boat_crew_leader);
         }
@@ -287,7 +288,7 @@ namespace Group_I_M32COM.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index)).WithSuccess("Success", "Successfully Updated Boat Leader Details");
             }
             return View(boat_crew_leader);
         }
@@ -333,7 +334,7 @@ namespace Group_I_M32COM.Controllers
             var boat_crew_leader = await _context.Boat_crew_leader.FindAsync(id);
             _context.Boat_crew_leader.Remove(boat_crew_leader);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index)).WithSuccess("Success", "Successfully Deleted Boat Team Leader Details");
         }
 
         private bool Boat_crew_leaderExists(int id)
