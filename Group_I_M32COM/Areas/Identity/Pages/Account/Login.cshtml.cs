@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using static Group_I_M32COM.Helpers.Data_RolesEnum;
+using Microsoft.EntityFrameworkCore;
 
 namespace Group_I_M32COM.Areas.Identity.Pages.Account
 {
@@ -112,19 +113,42 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
                                 return RedirectToAction("AdminIndex", "Admin");
                             }
 
-                            // to redirect logged user to crew page based on the user assigned role
-
+                            // to redirect logged user to home page based on the user assigned role
+                            if (user_roles.Single().Equals(Role_Enum.User.ToString(), StringComparison.OrdinalIgnoreCase))
+                            {
+                                user.Login_Status = true;
+                                await _signInManager.UserManager.UpdateAsync(user);
+                                return LocalRedirect(returnUrl);
+                            }
 
                             // to redirect logged user to competitor page based on the user assigned role
                             if (user_roles.Single().Equals(Role_Enum.TeamLeader.ToString(), StringComparison.OrdinalIgnoreCase))
                             {
-                                user.Login_Status = true;
+                                var team_data = await _context.Boat_crew_leader
+                                                       .Include(bc => bc.boat_Crew)
+                                                       .FirstOrDefaultAsync(m => m.User_Id == user.Id);
+
+                                if (team_data!= null)
+                                {
+                                    user.Login_Status = true;
+                                    await _signInManager.UserManager.UpdateAsync(user);
+                                    return RedirectToAction("Index", "Members", new { user.Id });
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError(string.Empty, "Invalid login attempt, The user does not have a boat team to manage.");
+
+                                    // using the identityframework object of _signInManager to logout the user
+                                    await _signInManager.SignOutAsync();
+                                }
+
+
+                                /*user.Login_Status = true;
                                 await _signInManager.UserManager.UpdateAsync(user);
-                                return RedirectToAction("Index", "Members", new { user.Id });
+                                return RedirectToAction("Index", "Members", new { user.Id });*/
                             }
                         }
                     }
-                    return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {
