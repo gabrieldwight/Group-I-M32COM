@@ -27,22 +27,15 @@ namespace Group_I_M32COM.Controllers
             var team_data = await _context.Boat_crew_leader
                 .Include(bc => bc.boat_Crew)
                 .FirstOrDefaultAsync(m => m.User_Id == id);
-            ViewBag.Slots = team_data.boat_Crew.Boat_crew_allocation;
-
-            TempData["User_Id"] = team_data.User_Id;
-
-            // To check if the user has a team role
-
-            if(team_data.User_Id != null)
-            {
-                return View(await _context.Members.ToListAsync());
-            }
-
-            else
-            {
-                return NotFound();
-            }
             
+            // To check if the user has a team role
+            if(team_data != null)
+            {
+                ViewBag.Slots = team_data.boat_Crew.Boat_crew_allocation;
+
+                TempData["User_Id"] = team_data.User_Id;
+            }
+            return View(await _context.Members.ToListAsync());
         }
 
         // GET: Members/Details/5
