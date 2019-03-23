@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
 using System.Linq;
+using static Group_I_M32COM.Helpers.Data_RolesEnum;
 
 namespace Group_I_M32COM.Areas.Identity.Pages.Account
 {
@@ -161,7 +162,7 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     // Add role to user after successful insert
-                    result = await _userManager.AddToRoleAsync(user, "User");
+                    result = await _userManager.AddToRoleAsync(user, Role_Enum.User.ToString());
 
                     _logger.LogInformation("User created a new account with password.");
 
@@ -183,6 +184,10 @@ namespace Group_I_M32COM.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+
+            // Implementing the bug fix on the registration page model when the model is not valid 
+            ViewData["CountryList"] = _countryData.LoadCountryList().OrderBy(a => a.Value).ToList();
+            ViewData["GenderList"] = _genderData.LoadGenderList().ToList();
 
             // If we got this far, something failed, redisplay form
             return Page();
