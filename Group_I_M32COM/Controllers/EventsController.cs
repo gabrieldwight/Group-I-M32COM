@@ -163,7 +163,11 @@ namespace Group_I_M32COM.Controllers
                         })
                         .ToList();
                     boat_type.Insert(0, new SelectListItem { Text = "Select Boat Type", Value = string.Empty });
-                    ViewBag.Boat_type = boat_type;
+
+                    if (boat_type != null)
+                    {
+                        ViewBag.Boat_type = boat_type;
+                    }
 
                     /* To retrieve the boats available in the Event_Types table and display the available records 
                        in the dropdown list*/
@@ -173,10 +177,15 @@ namespace Group_I_M32COM.Controllers
                             Text = e.Event_type_name,
                             Value = e.Id.ToString(),
                             Selected = e.Id == @event.Event_Types.Id ? true : false
-                        })
+                        }) 
                         .ToList();
                     event_type.Insert(0, new SelectListItem { Text = "Select Event Type", Value = string.Empty });
-                    ViewBag.Event_type = event_type;
+
+                    // To check if the event type data exists
+                    if (event_type != null)
+                    {
+                        ViewBag.Event_type = event_type;
+                    }
 
                     // Commit the transaction in the above number operations of the database context
                     dbContextTransaction.Commit();
