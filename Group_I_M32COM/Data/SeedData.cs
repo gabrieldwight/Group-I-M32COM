@@ -274,38 +274,85 @@ namespace Group_I_M32COM.Data
                 }
             };
 
-            /*//Creating sample about events table
+            //Creating sample about events table
             List<Event> events_ = new List<Event>()
             {
                 // First event
                 new Event
                 {
                     Event_name = "Faster race",
-                    Event_description="The faster boat is the winning.",
-                    Event_Start_date="2019-07-20 15:00:00",
-                    Event_End_date="2019-07-20 12:00:00",
+                    Event_description = "The faster boat is the winning.",
+                    Event_Types = new Event_type()
+                    {
+                        Event_type_name = "Faster round"
+                    },
+                    Event_Start_date = DateTime.ParseExact("2019-07-20 15:00:00", "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture),
+                    Event_End_date = DateTime.ParseExact("2019-07-20 12:00:00", "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture),
                     Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
                 },
                 // Second event
                 new Event
                 {
                     Event_name = "Thames race",
-                    Event_description="Enjoy a 4 day's race in Thames.",
-                    Event_Start_date="2019-08-23 08:30:00",
-                    Event_End_date="2019-08-27 08:30:00",
+                    Event_description = "Enjoy a 4 day's race in Thames.",
+                    Event_Start_date = DateTime.ParseExact("2019-08-23 08:30:00", "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture),
+                    Event_End_date = DateTime.ParseExact("2019-08-27 08:30:00", "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture),
                     Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
                 },
                 // Third event
                 new Event
                 {
                     Event_name = "Charity Ball",
-                    Event_description="An hour race where th rewards of the winnings are donated to charity",
-                    Event_Start_date="2019-14-05 20:00:00",
-                    Event_End_date="2019-14-05 21:00:00",
+                    Event_description = "An hour race where th rewards of the winnings are donated to charity",
+                    Event_Start_date = DateTime.ParseExact("2019-04-05 20:00:00", "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture),
+                    Event_End_date = DateTime.ParseExact("2019-04-05 21:00:00", "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture),
                     Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
                 }
-            };*/
+            };
 
+            // seeding boat crew teams
+            List<Boat_crew> boat_Crews = new List<Boat_crew>()
+            {
+                // first boat crew
+                new Boat_crew
+                {
+                    Boat_crew_name = "Coventry Pacers",
+                    Boat_crew_address = "CV1",
+                    Boat_crew_phone = "8392920022",
+                    Boat_crew_allocation = 3,
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                },
+
+                // second boat crew
+                new Boat_crew
+                {
+                    Boat_crew_name = "Coventry Godiva",
+                    Boat_crew_address = "CV1",
+                    Boat_crew_phone = "6392920022",
+                    Boat_crew_allocation = 10,
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                },
+
+                // third boat crew
+                new Boat_crew
+                {
+                    Boat_crew_name = "Warwick Pacers",
+                    Boat_crew_address = "WW1",
+                    Boat_crew_phone = "3392920022",
+                    Boat_crew_allocation = 10,
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                },
+
+                // fourth boat crew
+                new Boat_crew
+                {
+                    Boat_crew_name = "Warwick Blazers",
+                    Boat_crew_address = "WW1",
+                    Boat_crew_phone = "8262920022",
+                    Boat_crew_allocation = 3,
+                    Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
+                }
+            };
 
             // Seeding the created multiple list data into multiple tables
             using (var dbContextTransaction = context.Database.BeginTransaction())
@@ -331,6 +378,28 @@ namespace Group_I_M32COM.Data
                             context.Add(event_type);
                         }
                     }
+
+                    // Seeding the event sample data
+                    foreach (var events in events_)
+                    {
+                        // To check if the event data exists on runtime to avoid duplicate entry in the database
+                        if (context.Events.SingleOrDefault(es => es.Event_name == events.Event_name) == null)
+                        {
+                            context.Add(events);
+                        }
+                    }
+
+                    // Seeding the boat crew sample data
+                    foreach (var boatcrew in boat_Crews)
+                    {
+                        // To check if the boat crew data exists on runtime to avoid duplicate entry in the database
+                        if (context.Boat_Crews.SingleOrDefault(bc => bc.Boat_crew_name == boatcrew.Boat_crew_name) == null)
+                        {
+                            context.Add(boatcrew);
+                        }
+                    }
+
+
                     context.SaveChanges();
                         
 
