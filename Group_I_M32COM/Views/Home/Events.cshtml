@@ -10,13 +10,11 @@
 <div class="container">
     <div class="row">
 
-        <!--Event items-->
-        @foreach (var item in Model)
+        <!--To display the list of upcoming events that are greater than today-->
+        @if (Model.Count() > 0)
         {
-            <!--To display the list of upcoming events that are greater than today-->
-            var event_date = item.Event_Start_date.Value.Date.ToString("yyyy-MM-dd");
-            var current_date = DateTime.Now.ToString("yyyy-MM-dd");
-            if (DateTime.Parse(event_date) > DateTime.Parse(current_date))
+            <!--Event items-->
+            @foreach (var item in Model)
             {
                 <div class="col-lg-4">
                     <div class="our-team-main">
@@ -24,19 +22,26 @@
                         <div class="team-front">
                             <img src="http://placehold.it/110x110/9c27b0/fff?text=@Html.DisplayFor(model => item.Event_name)" class="img-fluid" />
                             <h3>@Html.DisplayFor(model => item.Event_name)</h3>
-                            <p>@Html.DisplayFor(model => item.Event_Start_date) - @Html.DisplayFor(model => item.Event_End_date)</p>
+                            <strong>Event type:</strong><h4>@Html.DisplayFor(model => item.Event_Types.Event_type_name)</h4>
+                            <strong>Event start date:</strong><p>@Html.DisplayFor(model => item.Event_Start_date)</p> 
+                            <strong>Event end date:</strong><p>@Html.DisplayFor(model => item.Event_End_date)</p>
                         </div>
 
                         <div class="team-back">
                             <span>
-                                @Html.DisplayFor(model => item.Event_description)
+                                <strong>Event description:</strong> @Html.DisplayFor(model => item.Event_description)
                             </span>
                         </div>
 
                     </div>
                 </div>
-                <!--Events items-->
+                <!--Events items-->     
             }
         }
+        else
+        {
+            <h4>Future upcoming events not available at the moment</h4>
+        }
+
     </div>
 </div>
