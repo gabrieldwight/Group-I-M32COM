@@ -45,7 +45,10 @@ namespace Group_I_M32COM.Controllers
 
         public async Task <IActionResult> Events()
         {
-            return View(await _context.Events.ToListAsync());
+            var event_data = _context.Events
+                .Include(et => et.Event_Types)
+                .Where(e => DateTime.Parse(e.Event_Start_date.Value.Date.ToString("yyyy-MM-dd")) >= DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd")));
+            return View(await event_data.ToListAsync());
         }
 
         public IActionResult Calendar()
