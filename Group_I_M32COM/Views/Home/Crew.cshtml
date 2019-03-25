@@ -1,4 +1,8 @@
-﻿@model IEnumerable<Group_I_M32COM.DbTableModel.Boat_crew>
+﻿@using Group_I_M32COM.Data
+@using Microsoft.EntityFrameworkCore;
+
+@model IEnumerable<Group_I_M32COM.DbTableModel.Boat_crew>
+@inject ApplicationDbContext _context
 
 @{
     ViewData["Title"] = "Crew";
@@ -22,7 +26,7 @@
                         <div class="card">
                             @if (item.Boat_crew_logo != null)
                             {
-                                <img class="card-img-top" src="@Url.Content(item.Boat_crew_logo)"/>
+                                <img class="card-img-top" src="@Url.Content(item.Boat_crew_logo)" />
                             }
                             else
                             {
@@ -50,9 +54,18 @@
                                 @if (item.Event_Participations.Count() > 0)
                                 {
                                     <strong>Events participated: </strong>
+
                                     @foreach (var participated_event in item.Event_Participations)
                                     {
-                                        <span class="float-right"><br />@Html.DisplayFor(modelItem => participated_event.Event.Event_name)</span>
+                                        var get_event_list = _context.Event_Participations
+                                            .Where(x => x.Id == participated_event.Id)
+                                            .Include(y => y.Event);
+
+                                        @foreach (var event_name in get_event_list)
+                                        {
+                                            <span class="float-right"><br />@Html.DisplayFor(modelItem => event_name.Event.Event_name)</span>
+                                        }
+
                                     }
                                 }
                                 else
