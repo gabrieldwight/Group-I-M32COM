@@ -72,6 +72,7 @@ namespace Group_I_M32COM.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Member_name,Created_At,Updated_At")] Members members)
         {
+            Boat_crew _Crew = new Boat_crew();
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
                 try
@@ -85,6 +86,7 @@ namespace Group_I_M32COM.Controllers
                     team_data.Updated_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
                     _context.Update(team_data);
                     _context.Entry(team_data).Property(x => x.Created_At).IsModified = false; // To prevent the datetime property to be set as null on update operation 
+                    _Crew.Id = team_data.boat_Crew.Id;
                     await _context.SaveChangesAsync();
 
                     // Commit the transaction in the above number operations of the database context
@@ -100,6 +102,8 @@ namespace Group_I_M32COM.Controllers
 
             if (ModelState.IsValid)
             {
+                var get_boat_crew = await _context.Boat_Crews.SingleOrDefaultAsync(x => x.Id == _Crew.Id);
+                members.Boat_Crew = get_boat_crew;
                 members.Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim());
                 _context.Add(members);
                 await _context.SaveChangesAsync();
