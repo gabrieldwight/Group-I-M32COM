@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Group_I_M32COM.DbTableModel.Boat_crew>
+
+@{
+    ViewData["Title"] = "Crew";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-xs-12">
+        <h2 class="text-center">List of boats crew and team members that have participate in our events</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="container">
+        <div class="row">
+            @if (Model.Count() > 0)
+            {
+                @foreach (var item in Model)
+                {
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
+                        <div class="card">
+                            @if (item.Boat_crew_logo != null)
+                            {
+                                <img class="card-img-top" src="@Url.Content(item.Boat_crew_logo)"/>
+                            }
+                            else
+                            {
+                                <img class="card-img-top" src="~/images/rowing-boat.svg" />
+                            }
+                            <div class="card-block">
+                                <h4 class="card-title"><strong>Boat Crew: </strong><br />@Html.DisplayFor(modelItem => item.Boat_crew_name)</h4>
+                                <div class="meta">
+                                    <a href="#"></a>
+                                </div>
+                                <div class="card-text">
+                                    <p><strong>Address: </strong><br /> @Html.DisplayFor(modelItem => item.Boat_crew_address)</p>
+                                    <p><strong>Phone: </strong><br /> @Html.DisplayFor(modelItem => item.Boat_crew_phone)</p>
+                                    @if (item.Boat_crew_allocation > 0)
+                                    {
+                                        <p><strong>Space available: </strong><br />@Html.DisplayFor(modelItem => item.Boat_crew_allocation)</p>
+                                    }
+                                    else
+                                    {
+                                        <p><strong>Space available: </strong><br />Space not available</p>
+                                    }
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                @if (item.Event_Participations.Count() > 0)
+                                {
+                                    <strong>Events participated: </strong>
+                                    @foreach (var participated_event in item.Event_Participations)
+                                    {
+                                        <span class="float-right"><br />@Html.DisplayFor(modelItem => participated_event.Event.Event_name)</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <strong>Team to participate in upcoming events soon</strong>
+                                }
+                                <br />
+                                @if (item.Members.Count() > 0)
+                                {
+                                    <strong>Team members: </strong>
+                                    @foreach (var team_members in item.Members)
+                                    {
+                                        <span><i class=""></i><br />@Html.DisplayFor(modelItem => team_members.Member_name)</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <strong>Team open to recruit members</strong>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <h4>Boat team is not available at the moment</h4>
+            }
+        </div>
+    </div>
+</div>
+
