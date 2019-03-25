@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<Group_I_M32COM.DbTableModel.Boat>
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -10,7 +11,7 @@
     </ol>
     <div class="carousel-inner" role="listbox">
         <div class="item active">
-            <img src="https://www.solidbackgrounds.com/images/950x350/950x350-paynes-grey-solid-color-background.jpg" alt="ASP.NET" class="img-responsive"/>
+            <img src="https://www.solidbackgrounds.com/images/950x350/950x350-paynes-grey-solid-color-background.jpg" alt="ASP.NET" class="img-responsive" />
             <div class="carousel-caption" role="option">
                 <p>
                     Welcome to the remote boat racing club to explore the available events and calendars and meet a team of leaders.
@@ -46,35 +47,54 @@
 
 <div class="row">
     <div class="col-xs-12">
-        <h2>Group_I_M32COM</h2>
-        <p class="</p>
-        <p class="lead">
-            This boat racing completion website is developed by
-            <h5>Gabriel D Odero,
-            Umair Zia,
-            Yamini Rathi,
-            Michalis Sofroni,
-            Natha zanga.</h5>
-            We have tried to add all the functionalities in the project. Sample boat class categories with sub categories include:
-            <ul>
-                <h4>Power</h4>
-                <li>Fuel</li>
-                <li>Nitro</li>
-                <li>Electric</li>
-            </ul>
-            <ul>
-                <h4>Hull type</h4>
-                <li>Mono</li>
-                <li>Hydro – high speed racing</li>
-                <li>Tunnel</li>
-                <li>Catamaran</li>
+        <h2 class="text-center">List of boats that participate in our events</h2>
+    </div>
+</div>
 
-            </ul>
-            <ul>
-                <h4>Rigger</h4>
-                <li>Size</li>
-            </ul>
-        </p>
-        
+<div class="row">
+    <div class="container">
+        <div class="row">
+            @if (Model.Count() > 0)
+            {
+                @foreach (var item in Model)
+                {
+                    <div class="col-sm-6 col-md-4 col-lg-3 mt-4">
+                        <div class="card">
+                            @foreach (var boat_image in item.Boat_Medias)
+                            {
+                                if (boat_image.Boat_media_url != null)
+                                {
+                                    <img class="card-img-top" src="@Url.Content(boat_image.Boat_media_url)">
+                                }
+                                else
+                                {
+                                    <img class="card-img-top" src="~/images/boat_placeholder.png">
+                                }
+                            }
+                            <div class="card-block">
+                                <h4 class="card-title"><strong>Boat name: </strong><br />@Html.DisplayFor(modelItem => item.Boat_name)</h4>
+                                <div class="meta">
+                                    <a href="#"></a>
+                                </div>
+                                <div class="card-text">
+                                    <p><strong>Weight: </strong><br /> @Html.DisplayFor(modelItem => item.Boat_weight)</p>
+                                    <p><strong>Speed: </strong><br /> @Html.DisplayFor(modelItem => item.Boat_top_speed)</p>
+                                    <p><strong>Description: </strong><br />@Html.DisplayFor(modelItem => item.Boat_description)</p>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <span class="float-right"><strong>Category: </strong><br />@Html.DisplayFor(modelItem => item.Boat_Types.Boat_class_type)</span>
+                                <br />
+                                <span><i class=""></i><strong>Sub Category: </strong><br />@Html.DisplayFor(modelItem => item.Sub_Boat_Types.Sub_boat_class_type)</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <h4>Future upcoming events not available at the moment</h4>
+            }
+        </div>
     </div>
 </div>
