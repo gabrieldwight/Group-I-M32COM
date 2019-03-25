@@ -363,8 +363,8 @@ namespace Group_I_M32COM.Data
                         {
                             context.Add(bm);
                         }
-                        context.SaveChanges();
                     }
+                    context.SaveChanges();
 
                     //Seeding the event type sample data 
                     foreach (var event_type in event_Types)
@@ -374,8 +374,8 @@ namespace Group_I_M32COM.Data
                         {
                             context.Add(event_type);
                         }
-                        context.SaveChanges();
                     }
+                    context.SaveChanges();
 
                     // Seeding the event sample data
                     foreach (var events in events_)
@@ -385,8 +385,8 @@ namespace Group_I_M32COM.Data
                         {
                             context.Add(events);
                         }
-                        context.SaveChanges();
                     }
+                    context.SaveChanges();
 
                     // Seeding the boat crew sample data
                     foreach (var boatcrew in boat_Crews)
@@ -396,8 +396,8 @@ namespace Group_I_M32COM.Data
                         {
                             context.Add(boatcrew);
                         }
-                        context.SaveChanges();
                     }
+                    context.SaveChanges();
 
                     // Commit the transaction in the above number operations of the database context
                     dbContextTransaction.Commit();
