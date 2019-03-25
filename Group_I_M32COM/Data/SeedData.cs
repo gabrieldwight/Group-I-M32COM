@@ -282,10 +282,6 @@ namespace Group_I_M32COM.Data
                 {
                     Event_name = "Faster race",
                     Event_description = "The faster boat is the winning.",
-                    Event_Types = new Event_type()
-                    {
-                        Event_type_name = "Faster round"
-                    },
                     Event_Start_date = DateTime.ParseExact("2019-07-20 15:00:00", "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture),
                     Event_End_date = DateTime.ParseExact("2019-07-20 12:00:00", "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture),
                     Created_At = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Trim())
@@ -367,6 +363,7 @@ namespace Group_I_M32COM.Data
                         {
                             context.Add(bm);
                         }
+                        context.SaveChanges();
                     }
 
                     //Seeding the event type sample data 
@@ -377,6 +374,7 @@ namespace Group_I_M32COM.Data
                         {
                             context.Add(event_type);
                         }
+                        context.SaveChanges();
                     }
 
                     // Seeding the event sample data
@@ -387,6 +385,7 @@ namespace Group_I_M32COM.Data
                         {
                             context.Add(events);
                         }
+                        context.SaveChanges();
                     }
 
                     // Seeding the boat crew sample data
@@ -397,11 +396,8 @@ namespace Group_I_M32COM.Data
                         {
                             context.Add(boatcrew);
                         }
+                        context.SaveChanges();
                     }
-
-
-                    context.SaveChanges();
-                        
 
                     // Commit the transaction in the above number operations of the database context
                     dbContextTransaction.Commit();
