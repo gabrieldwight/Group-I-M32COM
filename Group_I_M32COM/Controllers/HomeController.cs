@@ -19,9 +19,14 @@ namespace Group_I_M32COM.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            // To load the list of boat details to the homepage
+            var _boats = _context.Boats
+                .Include(boat_media => boat_media.Boat_Medias)
+              .Include(boat_category => boat_category.Boat_Types)
+              .Include(sub_boat_category => sub_boat_category.Sub_Boat_Types);
+            return View(await _boats.ToListAsync());
         }
 
         public IActionResult About()
@@ -54,6 +59,15 @@ namespace Group_I_M32COM.Controllers
         public IActionResult Calendar()
         {
             return View();
+        }
+
+        public async Task <IActionResult> Crew()
+        {
+            // To get the boat crew details and member details  and event participations
+            var boat_crew = _context.Boat_Crews
+                .Include(bm => bm.Members)
+                .Include(ep => ep.Event_Participations);
+            return View(await boat_crew.ToListAsync());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
